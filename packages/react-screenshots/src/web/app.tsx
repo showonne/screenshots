@@ -33,17 +33,18 @@ export default function App (): ReactElement {
     screenshotsRef.current?.manualSelect({ x: 0, y: 0 }, { x: rect.width, y: rect.height })
   }
 
+
   return (
-    <div className='body'>
+    <div className='body' ref={rootRef}>
       <div style={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
         <button onClick={startEdit}>start edit</button>
       </div>
-      <div ref={rootRef}>
+      <div>
         <Screenshots
           ref={screenshotsRef}
           url={imageUrl}
-          width={window.innerWidth}
-          height={window.innerHeight}
+          width={rootRef.current?.getBoundingClientRect().width}
+          height={rootRef.current?.getBoundingClientRect()?.height }
           lang={{
             operation_rectangle_title: 'Rectangle'
           }}
