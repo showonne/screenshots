@@ -64,5 +64,6 @@
     "rimraf": "^4.4.1",
     "typescript": "^5.0.2",
     "vite": "^4.2.1"
-  }
+  },
+  "gitHead": "49e658ac72493ec8bd1243167c45230b9c73c50c"
 }
