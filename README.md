@@ -1,4 +1,4 @@
-# fork from https://github.com/nashaofu/screenshots
+# forked from https://github.com/nashaofu/screenshots
 
 # 📷 screenshots
 

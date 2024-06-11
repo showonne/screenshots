@@ -1,6 +1,6 @@
 {
-  "name": "@showonne/react-screenshots",
-  "version": "0.5.29",
+  "name": "@cc-kit/react-screenshots",
+  "version": "0.5.30",
   "description": "a screenshot cropper tool by react",
   "main": "./lib/react-screenshots.cjs.js",
   "module": "./lib/react-screenshots.es.js",
@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nashaofu/screenshots.git"
+    "url": "git+https://github.com/showonne/screenshots.git"
   },
   "keywords": [
     "screenshot",
     "cropper",
     "react"
   ],
-  "author": "nashaofu",
+  "author": "showonne",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nashaofu/screenshots/issues"
@@ -59,8 +59,8 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "less": "^4.1.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "rimraf": "^4.4.1",
     "typescript": "^5.0.2",
     "vite": "^4.2.1"

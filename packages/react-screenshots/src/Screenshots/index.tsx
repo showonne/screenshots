@@ -1,4 +1,4 @@
-import React, { MouseEvent, ReactElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { MouseEvent, ReactElement, forwardRef, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
 import composeImage from './composeImage'
 import './icons/iconfont.less'
 import './screenshots.less'
@@ -6,7 +6,7 @@ import ScreenshotsBackground, { ScreenshotsBackgroundRef } from './ScreenshotsBa
 import ScreenshotsCanvas from './ScreenshotsCanvas'
 import ScreenshotsContext from './ScreenshotsContext'
 import ScreenshotsOperations from './ScreenshotsOperations'
-import { Bounds, Emiter, History } from './types'
+import { Bounds, Emiter, History, Point } from './types'
 import useGetLoadedImage from './useGetLoadedImage'
 import zhCN, { Lang } from './zh_CN'
 
@@ -19,7 +19,11 @@ export interface ScreenshotsProps {
   [key: string]: unknown
 }
 
-export default function Screenshots ({ url, width, height, lang, className, ...props }: ScreenshotsProps): ReactElement {
+export interface ScreenshotsRef {
+  manualSelect: (p1: Point, p2: Point) => void
+}
+
+export default forwardRef(function Screenshots ({ url, width, height, lang, className, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
   const image = useGetLoadedImage(url)
   const canvasContextRef = useRef<CanvasRenderingContext2D>(null)
   const emiterRef = useRef<Emiter>({})
@@ -141,14 +145,18 @@ export default function Screenshots ({ url, width, height, lang, className, ...p
     reset()
   }, [url])
 
-  const handleSelect = () => {
-    const rootRect = rootRef.current?.getBoundingClientRect() ?? { width: 0, height: 0 }
-    backgroundRef.current?.manualSelect({ x: 0, y: 0 }, { x: rootRect.width, y: rootRect.height })
+  const manualSelect = (p1: Point, p2: Point) => {
+    backgroundRef.current?.manualSelect(p1, p2)
   }
+
+  useImperativeHandle(ref, () => {
+    return {
+      manualSelect
+    }
+  })
 
   return (
     <ScreenshotsContext.Provider value={{ store, dispatcher }}>
-      <button style={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }} onClick={handleSelect}>Click to select</button>
       <div
         className={classNames.join(' ')}
         style={{ width, height }}
@@ -162,4 +170,4 @@ export default function Screenshots ({ url, width, height, lang, className, ...p
       </div>
     </ScreenshotsContext.Provider>
   )
-}
+})
