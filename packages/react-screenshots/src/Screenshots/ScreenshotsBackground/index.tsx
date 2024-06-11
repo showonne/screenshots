@@ -117,14 +117,13 @@ export default memo(forwardRef(function ScreenshotsBackground (props, ref: Ref<S
   }, [image, bounds])
 
   const manualSelect = (p1: Point, p2: Point) => {
-
     pointRef.current = p1
     setPosition(p2)
 
     boundsDispatcher.set(
-        getBoundsByPoints(
-            p1, p2, p2.x, p2.y,
-        )
+      getBoundsByPoints(
+        p1, p2, p2.x, p2.y
+      )
     )
 
     isMoveRef.current = true
@@ -135,7 +134,7 @@ export default memo(forwardRef(function ScreenshotsBackground (props, ref: Ref<S
 
   useImperativeHandle(ref, () => {
     return {
-        manualSelect
+      manualSelect
     }
   })
 

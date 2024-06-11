@@ -142,13 +142,13 @@ export default function Screenshots ({ url, width, height, lang, className, ...p
   }, [url])
 
   const handleSelect = () => {
-    const rootRect = rootRef.current?.getBoundingClientRect()
-    backgroundRef.current?.manualSelect({x: 0, y: 0}, {x: rootRect!?.width, y: rootRect!?.height })
+    const rootRect = rootRef.current?.getBoundingClientRect() ?? { width: 0, height: 0 }
+    backgroundRef.current?.manualSelect({ x: 0, y: 0 }, { x: rootRect.width, y: rootRect.height })
   }
 
   return (
     <ScreenshotsContext.Provider value={{ store, dispatcher }}>
-      <button style={{position: 'absolute', top: 0, left: 0, zIndex: 2}} onClick={handleSelect}>Click to select</button>
+      <button style={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }} onClick={handleSelect}>Click to select</button>
       <div
         className={classNames.join(' ')}
         style={{ width, height }}
