@@ -1,6 +1,6 @@
 {
   "name": "@cc-kit/react-screenshots",
-  "version": "0.5.31",
+  "version": "0.5.32",
   "description": "a screenshot cropper tool by react",
   "main": "./lib/react-screenshots.cjs.js",
   "module": "./lib/react-screenshots.es.js",
@@ -65,6 +65,5 @@
     "typescript": "^5.0.2",
     "vite": "^4.2.1"
   },
-  "gitHead": "b15a94157c4801b777dd4a4b15c3c3d7bc762b5e",
-  "dependencies": {}
+  "gitHead": "b15a94157c4801b777dd4a4b15c3c3d7bc762b5e"
 }
