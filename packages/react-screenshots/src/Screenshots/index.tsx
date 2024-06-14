@@ -23,7 +23,7 @@ export interface ScreenshotsRef {
   manualSelect: (p1: Point, p2: Point) => void
 }
 
-export default forwardRef(function Screenshots ({ url, width, height, lang, className, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
+export default forwardRef(function Screenshots ({ url, container, lang, className, height, width, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
   const image = useGetLoadedImage(url)
   const canvasContextRef = useRef<CanvasRenderingContext2D>(null)
   const emiterRef = useRef<Emiter>({})
@@ -70,7 +70,7 @@ export default forwardRef(function Screenshots ({ url, width, height, lang, clas
     setHistory,
     setBounds,
     setCursor,
-    setOperation
+    setOperation,
   }
 
   const classNames = ['screenshots']

@@ -65,5 +65,6 @@
     "typescript": "^5.0.2",
     "vite": "^4.2.1"
   },
-  "gitHead": "b15a94157c4801b777dd4a4b15c3c3d7bc762b5e"
+  "gitHead": "b15a94157c4801b777dd4a4b15c3c3d7bc762b5e",
+  "dependencies": {}
 }
