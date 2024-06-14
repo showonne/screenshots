@@ -70,7 +70,7 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
     setHistory,
     setBounds,
     setCursor,
-    setOperation,
+    setOperation
   }
 
   const classNames = ['screenshots']
