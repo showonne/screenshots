@@ -13,6 +13,7 @@ import ScreenshotsSizeColor from '../../ScreenshotsSizeColor'
 import { HistoryItemSource, HistoryItemEdit, HistoryItemType } from '../../types'
 import { isHit, isHitCircle } from '../utils'
 import draw, { getEditedRectangleData } from './draw'
+import useStore from '../../hooks/useStore'
 
 export interface RectangleData {
   size: number
@@ -53,6 +54,7 @@ export default function Rectangle (): ReactElement {
   const [color, setColor] = useState('#ee5126')
   const rectangleRef = useRef<HistoryItemSource<RectangleData, RectangleEditData> | null>(null)
   const rectangleEditRef = useRef<HistoryItemEdit<RectangleEditData, RectangleData> | null>(null)
+  const { scale } = useStore()
 
   const checked = operation === 'Rectangle'
 
@@ -163,8 +165,8 @@ export default function Rectangle (): ReactElement {
       }
 
       const { left, top } = canvasContextRef.current.canvas.getBoundingClientRect()
-      const x = e.clientX - left
-      const y = e.clientY - top
+      const x = (e.clientX - left) / scale
+      const y = (e.clientY - top) / scale
       rectangleRef.current = {
         name: 'Rectangle',
         type: HistoryItemType.Source,
@@ -180,8 +182,12 @@ export default function Rectangle (): ReactElement {
         draw,
         isHit
       }
+
+      console.warn(
+        'left', left, 'top', top
+      )
     },
-    [checked, size, color, canvasContextRef]
+    [checked, size, color, canvasContextRef, scale]
   )
 
   const onMousemove = useCallback(
@@ -201,9 +207,10 @@ export default function Rectangle (): ReactElement {
         }
       } else if (rectangleRef.current) {
         const { left, top } = canvasContextRef.current.canvas.getBoundingClientRect()
+        console.log('left2,', left, 'top2', top)
         const rectangleData = rectangleRef.current.data
-        rectangleData.x2 = e.clientX - left
-        rectangleData.y2 = e.clientY - top
+        rectangleData.x2 = (e.clientX - left) / scale
+        rectangleData.y2 = (e.clientY - top) / scale
 
         if (history.top !== rectangleRef.current) {
           historyDispatcher.push(rectangleRef.current)
@@ -212,7 +219,7 @@ export default function Rectangle (): ReactElement {
         }
       }
     },
-    [checked, canvasContextRef, history, historyDispatcher]
+    [checked, canvasContextRef, history, historyDispatcher, scale]
   )
 
   const onMouseup = useCallback(() => {

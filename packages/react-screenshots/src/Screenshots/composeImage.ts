@@ -6,9 +6,10 @@ interface ComposeImageOpts {
   height: number
   history: History
   bounds: Bounds
+  scale: number
 }
 
-export default function composeImage ({ image, width, height, history, bounds }: ComposeImageOpts): Promise<Blob> {
+export default function composeImage ({ image, width, height, history, bounds, scale = 1 }: ComposeImageOpts): Promise<Blob> {
   return new Promise<Blob>((resolve, reject) => {
     const $canvas = document.createElement('canvas')
     const targetWidth = bounds.width * window.devicePixelRatio
@@ -21,8 +22,8 @@ export default function composeImage ({ image, width, height, history, bounds }:
       return reject(new Error('convert image to blob fail'))
     }
 
-    const rx = image.naturalWidth / width
-    const ry = image.naturalHeight / height
+    const rx = image.naturalWidth / width * scale
+    const ry = image.naturalHeight / height * scale
 
     ctx.imageSmoothingEnabled = true
     // 设置太高，图片会模糊

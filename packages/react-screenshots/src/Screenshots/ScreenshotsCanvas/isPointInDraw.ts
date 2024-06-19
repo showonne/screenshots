@@ -4,7 +4,8 @@ export default function isPointInDraw (
   bounds: Bounds,
   canvas: HTMLCanvasElement | null,
   history: History,
-  e: MouseEvent
+  e: MouseEvent,
+  scale: number
 ) {
   if (!canvas) {
     return false

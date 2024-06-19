@@ -8,7 +8,7 @@ import ScreenshotsButton from '../../ScreenshotsButton'
 import composeImage from '../../composeImage'
 
 export default function Ok (): ReactElement {
-  const { image, width, height, history, bounds, lang } = useStore()
+  const { image, width, height, history, bounds, lang, scale } = useStore()
   const canvasContextRef = useCanvasContextRef()
   const [, historyDispatcher] = useHistory()
   const call = useCall()
@@ -25,7 +25,8 @@ export default function Ok (): ReactElement {
         width,
         height,
         history,
-        bounds
+        bounds,
+        scale,
       }).then(blob => {
         call('onOk', blob, bounds)
         reset()

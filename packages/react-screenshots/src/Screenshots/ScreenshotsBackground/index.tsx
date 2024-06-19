@@ -11,7 +11,7 @@ export interface ScreenshotsBackgroundRef {
 }
 
 export default memo(forwardRef(function ScreenshotsBackground (props, ref: Ref<ScreenshotsBackgroundRef>): ReactElement | null {
-  const { url, image, width, height } = useStore()
+  const { url, image, width, height, scale } = useStore()
   const [bounds, boundsDispatcher] = useBounds()
 
   const elRef = useRef<HTMLDivElement>(null)
@@ -107,7 +107,7 @@ export default memo(forwardRef(function ScreenshotsBackground (props, ref: Ref<S
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseup', onMouseUp)
     }
-  }, [updateBounds])
+  }, [updateBounds, scale])
 
   useLayoutEffect(() => {
     if (!image || bounds) {

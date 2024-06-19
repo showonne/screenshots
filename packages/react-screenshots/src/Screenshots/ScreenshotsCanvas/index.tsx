@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
-  useRef
+  useRef,
 } from 'react'
 import useBounds from '../hooks/useBounds'
 import useCursor from '../hooks/useCursor'
@@ -19,6 +19,7 @@ import getBoundsByPoints from './getBoundsByPoints'
 import getPoints from './getPoints'
 import './index.less'
 import isPointInDraw from './isPointInDraw'
+import { usePrevious } from 'ahooks'
 
 const borders = ['top', 'right', 'bottom', 'left']
 
@@ -50,7 +51,8 @@ export default memo(
     props,
     ref
   ): ReactElement | null {
-    const { url, image, width, height } = useStore()
+    const { url, image, width, height, scale } = useStore()
+    const prevScale = usePrevious(scale)
 
     const emiter = useEmiter()
     const [history] = useHistory()
@@ -89,6 +91,8 @@ export default memo(
         if (e.button !== 0 || !bounds) {
           return
         }
+        console.warn('down operation', operation);
+
         if (!operation) {
           resizeOrMoveRef.current = resizeOrMove
           pointRef.current = {
@@ -96,18 +100,21 @@ export default memo(
             y: e.clientY
           }
           boundsRef.current = {
-            x: bounds.x,
-            y: bounds.y,
-            width: bounds.width,
-            height: bounds.height
+            x: bounds.x * 1,
+            y: bounds.y * 1,
+            width: bounds.width * 1,
+            height: bounds.height * 1
           }
         } else {
           const draw = isPointInDraw(
             bounds,
             canvasRef.current,
             history,
-            e.nativeEvent
+            e.nativeEvent,
+            scale,
           )
+
+          console.warn('mousedown ??', bounds, history, draw)
           if (draw) {
             emiter.emit('drawselect', draw, e.nativeEvent)
           } else {
@@ -115,7 +122,7 @@ export default memo(
           }
         }
       },
-      [bounds, operation, emiter, history]
+      [bounds, operation, emiter, history, scale]
     )
 
     const updateBounds = useCallback(
@@ -213,14 +220,16 @@ export default memo(
       <div
         className='screenshots-canvas'
         style={{
-          width: bounds?.width || 0,
-          height: bounds?.height || 0,
+          width: (bounds?.width || 0) * scale,
+          height: (bounds?.height || 0) * scale,
           transform: bounds
             ? `translate(${bounds.x}px, ${bounds.y}px)`
             : 'none'
         }}
       >
-        <div className='screenshots-canvas-body'>
+        <div className='screenshots-canvas-body'
+
+        >
           {/* 保证一开始就显示，减少加载时间 */}
           <img
             className='screenshots-canvas-image'
@@ -246,6 +255,7 @@ export default memo(
             cursor
           }}
           onMouseDown={(e) => onMouseDown(e, 'move')}
+
         >
           {isCanResize && (
             <div className='screenshots-canvas-size'>
