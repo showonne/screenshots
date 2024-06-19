@@ -51,7 +51,7 @@ export default memo(
     props,
     ref
   ): ReactElement | null {
-    const { url, image, width, height, scale } = useStore()
+    const { url, image, width, height, scale, editing } = useStore()
     const prevScale = usePrevious(scale)
 
     const emiter = useEmiter()
@@ -66,7 +66,7 @@ export default memo(
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
 
-    const isCanResize = bounds && !history.stack.length && !operation
+    const isCanResize = bounds && !history.stack.length && !operation && !editing
 
     const draw = useCallback(() => {
       if (!bounds || !ctxRef.current) {
@@ -263,7 +263,7 @@ export default memo(
             </div>
           )}
         </div>
-        {borders.map((border) => {
+        {!editing && borders.map((border) => {
           return (
             <div
               key={border}

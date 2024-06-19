@@ -48,6 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",
     "@vitejs/plugin-react": "^3.1.0",
+    "antd": "^5.18.3",
     "eslint": "^8.37.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-config-standard-jsx": "^11.0.0",
@@ -67,6 +68,7 @@
   },
   "gitHead": "b15a94157c4801b777dd4a4b15c3c3d7bc762b5e",
   "dependencies": {
-    "ahooks": "^3.8.0"
+    "ahooks": "^3.8.0",
+    "mitt": "^3.0.1"
   }
 }

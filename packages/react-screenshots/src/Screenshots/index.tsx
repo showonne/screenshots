@@ -6,10 +6,12 @@ import ScreenshotsBackground, { ScreenshotsBackgroundRef } from './ScreenshotsBa
 import ScreenshotsCanvas from './ScreenshotsCanvas'
 import ScreenshotsContext from './ScreenshotsContext'
 import ScreenshotsOperations from './ScreenshotsOperations'
-import { Bounds, Emiter, History, Point } from './types'
+import { Bounds, Emiter, History, HistoryItemType, Point } from './types'
 import useGetLoadedImage from './useGetLoadedImage'
 import zhCN, { Lang } from './zh_CN'
-import { useThrottleFn } from 'ahooks'
+import { useEventEmitter, useMemoizedFn, useThrottleFn } from 'ahooks'
+import mitt from 'mitt'
+import useHistory from './hooks/useHistory'
 
 export interface ScreenshotsProps {
   url?: string
@@ -19,15 +21,23 @@ export interface ScreenshotsProps {
   className?: string
   mode: 'screenshots' | 'editor'
   onScaleChange?: (scale: number) => void
+  onHistoryChange?: (status: { redoDisabled: boolean, undoDisabled: boolean }) => void
+
   [key: string]: unknown
 }
 
 export interface ScreenshotsRef {
   manualSelect: (p1: Point, p2: Point) => void
   updateScale: (delta: number) => void
+  updateSize: (size: number) => void
+  updateColor: (color: string) => void
+  redo: () => void
+  undo: () => void
 }
 
-export default forwardRef(function Screenshots ({ url, container, lang, className, height: initHeight, width: initWidth, mode = 'screenshots', ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
+const globalEvents = mitt()
+
+export default forwardRef(function Screenshots({ url, container, lang, className, height: initHeight, width: initWidth, mode = 'screenshots', onHistoryChange, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
   const image = useGetLoadedImage(url)
   const canvasContextRef = useRef<CanvasRenderingContext2D>(null)
   const emiterRef = useRef<Emiter>({})
@@ -39,6 +49,7 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
   const [cursor, setCursor] = useState<string | undefined>('move')
   const [operation, setOperation] = useState<string | undefined>(undefined)
   const [scale, setScale] = useState(1)
+  const [editing, setEditing] = useState(mode === 'editor')
 
   const rootRef = useRef<HTMLDivElement>(null)
   const backgroundRef = useRef<ScreenshotsBackgroundRef>(null)
@@ -52,6 +63,7 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
     width,
     height,
     scale,
+    editing,
     image,
     lang: {
       ...zhCN,
@@ -62,7 +74,9 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
     history,
     bounds,
     cursor,
-    operation
+    operation,
+    mode,
+    globalEvents,
   }
 
   const call = useCallback(
@@ -160,7 +174,7 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
   const { run: onWheel } = useThrottleFn((event: WheelEvent) => {
     if (event.ctrlKey) {
       event.preventDefault(); // 阻止默认的缩放处理
-      
+
       // deltaY值表示滚轮的方向和距离，负值表示放大，正值表示缩小
       const delta = event.deltaY < 0 ? 0.1 : -0.1
       setScale(prev => prev + delta)
@@ -175,6 +189,9 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
       scaleHandlerRef.current.addEventListener('wheel', onWheel);
     }
     manualSelect({ x: 0, y: 0 }, { x: width, y: height })
+
+    setOperation('Rectangle')
+    setCursor('crosshair')
   }, [mode])
 
   const manualSelect = (p1: Point, p2: Point) => {
@@ -186,10 +203,80 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
     props.onScaleChange?.(scale + delta)
   }
 
+  const updateSize = (size: number) => {
+  }
+
+  const updateColor = (color: string) => {
+    globalEvents.emit('update:color', color)
+  }
+
+  // enum
+  const switchOperation = (operation: string) => {
+    setOperation(operation)
+
+    // todo
+    setCursor('crosshair')
+  }
+
+
+
+  const redo = useMemoizedFn(() => {
+    const { index, stack } = history
+    const item = stack[index + 1]
+
+    if (item) {
+      if (item.type === HistoryItemType.Source) {
+        item.isSelected = false
+      } else if (item.type === HistoryItemType.Edit) {
+        item.source.editHistory.push(item)
+      }
+    }
+
+    setHistory?.({
+      index: index >= stack.length - 1 ? stack.length - 1 : index + 1,
+      stack
+    })
+  })
+
+  const undo = useMemoizedFn(() => {
+    const { index, stack } = history
+    const item = stack[index]
+
+    if (item) {
+      if (item.type === HistoryItemType.Source) {
+        item.isSelected = false
+      } else if (item.type === HistoryItemType.Edit) {
+        item.source.editHistory.pop()
+      }
+    }
+
+    setHistory?.({
+      index: index <= 0 ? -1 : index - 1,
+      stack
+    })
+  })
+
+  useEffect(() => {
+    if (onHistoryChange) {
+      const redoDisabled = !history.stack.length || history.stack.length - 1 === history.index
+      const undoDisabled = history.index === -1
+
+      onHistoryChange({
+        redoDisabled,
+        undoDisabled
+      })
+    }
+  }, [history])
+
   useImperativeHandle(ref, () => {
     return {
       manualSelect,
       updateScale,
+      updateSize,
+      updateColor,
+      switchOperation,
+      redo,
+      undo
     }
   })
 
@@ -199,7 +286,7 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
         style={{
           width,
           height,
-          alignSelf: 'stretch',
+          // alignSelf: 'strench',
         }}
       >
         <div
@@ -213,7 +300,7 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
           <ScreenshotsCanvas ref={canvasContextRef} />
           <ScreenshotsOperations />
         </div>
-    </div>
+      </div>
     </ScreenshotsContext.Provider>
   )
 })

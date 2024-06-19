@@ -13,6 +13,7 @@ import { isHit, isHitCircle } from '../utils'
 import useDrawSelect from '../../hooks/useDrawSelect'
 import draw, { getEditedArrowData } from './draw'
 import useLang from '../../hooks/useLang'
+import { useColor } from '../../hooks/useColor'
 
 export interface ArrowData {
   size: number
@@ -44,9 +45,9 @@ export default function Arrow (): ReactElement {
   const [history, historyDispatcher] = useHistory()
   const canvasContextRef = useCanvasContextRef()
   const [size, setSize] = useState(3)
-  const [color, setColor] = useState('#ee5126')
   const arrowRef = useRef<HistoryItemSource<ArrowData, ArrowEditData> | null>(null)
   const arrowEditRef = useRef<HistoryItemEdit<ArrowEditData, ArrowData> | null>(null)
+  const { color, setColor } = useColor()
 
   const checked = operation === 'Arrow'
 

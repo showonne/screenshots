@@ -8,7 +8,7 @@ import './index.less'
 export const ScreenshotsOperationsCtx = React.createContext<Bounds | null>(null)
 
 export default memo(function ScreenshotsOperations (): ReactElement | null {
-  const { width, height } = useStore()
+  const { width, height, mode } = useStore()
   const [bounds] = useBounds()
   const [operationsRect, setOperationsRect] = useState<Bounds | null>(null)
   const [position, setPosition] = useState<Position | null>(null)
@@ -81,7 +81,7 @@ export default memo(function ScreenshotsOperations (): ReactElement | null {
         ref={elRef}
         className='screenshots-operations'
         style={{
-          visibility: position ? 'visible' : 'hidden',
+          visibility: mode === 'editor' ? 'hidden' : position ? 'visible' : 'hidden',
           transform: `translate(${position?.x ?? 0}px, ${position?.y ?? 0}px)`
         }}
         onDoubleClick={onDoubleClick}

@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useRef, useState } from 'react'
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
 import useCanvasContextRef from '../../hooks/useCanvasContextRef'
 import useCanvasMousedown from '../../hooks/useCanvasMousedown'
 import useCanvasMousemove from '../../hooks/useCanvasMousemove'
@@ -14,6 +14,7 @@ import { HistoryItemSource, HistoryItemEdit, HistoryItemType } from '../../types
 import { isHit, isHitCircle } from '../utils'
 import draw, { getEditedRectangleData } from './draw'
 import useStore from '../../hooks/useStore'
+import { useColor } from '../../hooks/useColor'
 
 export interface RectangleData {
   size: number
@@ -51,10 +52,10 @@ export default function Rectangle (): ReactElement {
   const [, cursorDispatcher] = useCursor()
   const canvasContextRef = useCanvasContextRef()
   const [size, setSize] = useState(3)
-  const [color, setColor] = useState('#ee5126')
   const rectangleRef = useRef<HistoryItemSource<RectangleData, RectangleEditData> | null>(null)
   const rectangleEditRef = useRef<HistoryItemEdit<RectangleEditData, RectangleData> | null>(null)
   const { scale } = useStore()
+  const { color, setColor } = useColor()
 
   const checked = operation === 'Rectangle'
 

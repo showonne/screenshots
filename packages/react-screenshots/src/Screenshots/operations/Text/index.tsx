@@ -18,6 +18,7 @@ import useDrawSelect from '../../hooks/useDrawSelect'
 import useCanvasMousemove from '../../hooks/useCanvasMousemove'
 import useCanvasMouseup from '../../hooks/useCanvasMouseup'
 import useLang from '../../hooks/useLang'
+import { useColor } from '../../hooks/useColor'
 
 export interface TextData {
   size: number;
@@ -117,7 +118,7 @@ export default function Text (): ReactElement {
   const [, cursorDispatcher] = useCursor()
   const canvasContextRef = useCanvasContextRef()
   const [size, setSize] = useState(3)
-  const [color, setColor] = useState('#ee5126')
+  const { color, setColor } = useColor()
   const textRef = useRef<HistoryItemSource<TextData, TextEditData> | null>(
     null
   )

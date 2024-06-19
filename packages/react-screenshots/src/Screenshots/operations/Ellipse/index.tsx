@@ -13,6 +13,7 @@ import ScreenshotsSizeColor from '../../ScreenshotsSizeColor'
 import { HistoryItemEdit, HistoryItemSource, HistoryItemType } from '../../types'
 import { isHit, isHitCircle } from '../utils'
 import draw, { getEditedEllipseData } from './draw'
+import { useColor } from '../../hooks/useColor'
 
 export interface EllipseData {
   size: number
@@ -50,9 +51,9 @@ export default function Ellipse (): ReactElement {
   const [, cursorDispatcher] = useCursor()
   const canvasContextRef = useCanvasContextRef()
   const [size, setSize] = useState(3)
-  const [color, setColor] = useState('#ee5126')
   const ellipseRef = useRef<HistoryItemSource<EllipseData, EllipseEditData> | null>(null)
   const ellipseEditRef = useRef<HistoryItemEdit<EllipseEditData, EllipseData> | null>(null)
+  const { color, setColor } = useColor()
 
   const checked = operation === 'Ellipse'
 

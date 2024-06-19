@@ -3,6 +3,8 @@ import Screenshots, { ScreenshotsRef } from '../Screenshots'
 import { Bounds } from '../Screenshots/types'
 import './app.less'
 import imageUrl from './basic.jpg'
+import { Button, Popover } from 'antd'
+import ScreenshotsSizeColor from '../Screenshots/ScreenshotsSizeColor'
 
 export default function App (): ReactElement {
   const onSave = useCallback((blob: Blob | null, bounds: Bounds) => {
@@ -31,18 +33,6 @@ export default function App (): ReactElement {
   const [rect, setRect] = useState({ height: 0, width: 0 })
   const [mode] = useState('editor')
 
-
-  // const startEdit = () => {
-  //   const rect = containRef.current!.getBoundingClientRect()
-  //   screenshotsRef.current?.manualSelect({ x: 0, y: 0 }, { x: 900, y: 506 })
-  // }
-
-  // useEffect(() => {
-  //   if (mode === 'editor') {
-  //     startEdit()
-  //   }
-  // }, [])
-
   useEffect(() => {
     if (containRef.current) {
       const rect = containRef.current!.getBoundingClientRect()
@@ -56,48 +46,73 @@ export default function App (): ReactElement {
     setScale(scale)
   }
 
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [size, _setSize] = useState(3)
+  const [color, _setColor] = useState('#F84135')
 
-  const handleCommit = useCallback(() => {
-    screenshotsRef.current!.updateScale(Number(inputRef.current?.value))
-  }, [])
-
-  const increaseScale = () => {
-    screenshotsRef.current!.updateScale(0.1)
+  const setSize = (size: number) => {
+    console.log(size)
+    screenshotsRef.current.updateSize(size)
   }
 
-  const decreaseScale = () => {
-    screenshotsRef.current!.updateScale(-0.1)
+  const setColor = (color: string) => {
+    _setColor(color)
+    screenshotsRef.current.updateColor(color)
   }
 
-  const startEdit = () => {
-    screenshotsRef.current!.manualSelect({x: 0, y: 0}, {x: 900, y: 506})
+  const [operation, setOperation] = useState('Rectangle')
+
+  const switchOperation = (operation) => {
+    setOperation(operation)
+    screenshotsRef.current.switchOperation(operation)
+  }
+
+  const [history, setHistory] = useState({ redoDisabled: true, undoDisabled: true })
+
+  const handleHistoryChange = (status) => {
+    setHistory(status)
   }
 
   return (
     <div className='body' ref={rootRef}>
-      <div style={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
-        <button onClick={startEdit}>start edit</button>
-        <br />
-        <button onClick={increaseScale}>+</button>
-        <button onClick={decreaseScale}>-</button>
-        <br />
-        <input ref={inputRef}></input>
-        <br/>
-        <button onClick={handleCommit}>commit scale</button>
-        <br/>
-        current scale:{scale.toFixed(2)}
+      <div className="drag-title" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <button onClick={() => location.reload()}>reload</button>
+        <Popover
+          open={operation === 'Rectangle'}
+          content={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
+        >
+          <Button onClick={() => switchOperation('Rectangle')}>Rectangle</Button>
+        </Popover>
+        <Popover
+          open={operation === 'Ellipse'}
+          content={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
+        >
+          <Button onClick={() => switchOperation('Ellipse')}>Ellipse</Button>
+        </Popover>
+        <Popover
+          open={operation === 'Arrow'}
+          content={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
+        >
+          <Button onClick={() => switchOperation('Arrow')}>Arrow</Button>
+        </Popover>
+        <Popover
+          open={operation === 'Brush'}
+          content={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
+        >
+          <Button onClick={() => switchOperation('Brush')}>Brush</Button>
+        </Popover>
+        <Popover
+          open={operation === 'Text'}
+          content={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
+        >
+          <Button onClick={() => switchOperation('Text')}>Text</Button>
+        </Popover>
+        <Button onClick={() => switchOperation('Mosaic')}>Mosaic</Button>
+        <Button disabled={history.undoDisabled} onClick={() => screenshotsRef.current?.undo()}>undo</Button>
+        <Button disabled={history.redoDisabled} onClick={() => screenshotsRef.current?.redo()}>redo</Button>
       </div>
       <div
+        className='image-container'
         ref={containRef as any}
-        style={{
-          height: 708,
-          width: 1024,
-          display: 'flex',
-          margin: '0 auto',
-          alignItems: 'center',
-          overflow: 'auto'
-        }}
       >
         <Screenshots
           mode={mode}
@@ -112,8 +127,9 @@ export default function App (): ReactElement {
           onCancel={onCancel}
           onOk={onOk}
           onScaleChange={handleScaleChange}
+          onHistoryChange={handleHistoryChange}
         />
-      </div>
+        </div>
     </div>
   )
 }

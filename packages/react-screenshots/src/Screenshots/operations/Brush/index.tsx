@@ -13,6 +13,7 @@ import useDrawSelect from '../../hooks/useDrawSelect'
 import { isHit } from '../utils'
 import draw from './draw'
 import useLang from '../../hooks/useLang'
+import { useColor } from '../../hooks/useColor'
 
 export interface BrushData {
   size: number
@@ -34,9 +35,9 @@ export default function Brush (): ReactElement {
   const canvasContextRef = useCanvasContextRef()
   const [history, historyDispatcher] = useHistory()
   const [size, setSize] = useState(3)
-  const [color, setColor] = useState('#ee5126')
   const brushRef = useRef<HistoryItemSource<BrushData, BrushEditData> | null>(null)
   const brushEditRef = useRef<HistoryItemEdit<BrushEditData, BrushData> | null>(null)
+  const { color, setColor } = useColor()
 
   const checked = operation === 'Brush'
 

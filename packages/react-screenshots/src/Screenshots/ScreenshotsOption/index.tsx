@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { ScreenshotsOperationsCtx } from '../ScreenshotsOperations'
 import { Point } from '../types'
 import './index.less'
+import useStore from '../hooks/useStore'
 
 export interface ScreenshotsOptionProps {
   open?: boolean
@@ -25,6 +26,7 @@ export default memo(function ScreenshotsOption ({ open, content, children }: Scr
   const [placement, setPlacement] = useState<Placement>(Placement.Bottom)
   const [position, setPosition] = useState<Position | null>(null)
   const [offsetX, setOffsetX] = useState<number>(0)
+  const { mode } = useStore()
 
   const getPopoverEl = () => {
     if (!popoverRef.current) {
@@ -107,6 +109,7 @@ export default memo(function ScreenshotsOption ({ open, content, children }: Scr
       })}
       {open &&
         content &&
+        mode !== 'editor' &&
         createPortal(
           <div
             ref={contentRef}

@@ -50,7 +50,7 @@ function draw (ctx: CanvasRenderingContext2D, action: HistoryItemSource<MosaicDa
 
 export default function Mosaic (): ReactElement {
   const lang = useLang()
-  const { image, width, height } = useStore()
+  const { image, width, height, scale } = useStore()
   const [operation, operationDispatcher] = useOperation()
   const canvasContextRef = useCanvasContextRef()
   const [history, historyDispatcher] = useHistory()
@@ -82,8 +82,8 @@ export default function Mosaic (): ReactElement {
       }
 
       const rect = canvasContextRef.current.canvas.getBoundingClientRect()
-      const x = e.clientX - rect.x
-      const y = e.clientY - rect.y
+      const x = (e.clientX - rect.x) / scale
+      const y = (e.clientY - rect.y) / scale
       const mosaicSize = size * 2
       mosaicRef.current = {
         name: 'Mosaic',
@@ -112,8 +112,8 @@ export default function Mosaic (): ReactElement {
       }
 
       const rect = canvasContextRef.current.canvas.getBoundingClientRect()
-      const x = e.clientX - rect.x
-      const y = e.clientY - rect.y
+      const x = (e.clientX - rect.x) / scale
+      const y = (e.clientY - rect.y) / scale
 
       const mosaicSize = mosaicRef.current.data.size
       const mosaicTiles = mosaicRef.current.data.tiles
