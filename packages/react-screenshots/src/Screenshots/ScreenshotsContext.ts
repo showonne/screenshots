@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { EmiterRef, History, Bounds, CanvasContextRef } from './types'
 import zhCN, { Lang } from './zh_CN'
+import { Emitter, EventType } from 'mitt'
 
 export interface ScreenshotsContextStore {
   url?: string
@@ -15,6 +16,9 @@ export interface ScreenshotsContextStore {
   cursor?: string
   operation?: string
   scale: number
+  globalEvents?: Emitter<Record<EventType, any>>
+  mode: 'screenshots' | 'editor'
+  editing: boolean
 }
 
 export interface ScreenshotsContextDispatcher {
@@ -46,7 +50,10 @@ export default React.createContext<ScreenshotsContextValue>({
     bounds: null,
     cursor: 'move',
     operation: undefined,
-    scale: 1
+    scale: 1,
+    globalEvents: undefined,
+    mode: 'screenshots',
+    editing: false
   },
   dispatcher: {
     call: undefined,

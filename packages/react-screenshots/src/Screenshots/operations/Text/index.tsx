@@ -19,6 +19,8 @@ import useCanvasMousemove from '../../hooks/useCanvasMousemove'
 import useCanvasMouseup from '../../hooks/useCanvasMouseup'
 import useLang from '../../hooks/useLang'
 import { useColor } from '../../hooks/useColor'
+import { CommonPopover } from '../../CommonPopover'
+import ScreenshotsColor from '../../ScreenshotsColor'
 
 export interface TextData {
   size: number;
@@ -276,20 +278,19 @@ export default function Text (): ReactElement {
 
   return (
     <>
-      <ScreenshotsButton
-        title={lang.operation_text_title}
-        icon='icon-text'
-        checked={checked}
-        onClick={onSelectText}
-        option={
-          <ScreenshotsSizeColor
-            size={size}
-            color={color}
-            onSizeChange={onSizeChange}
-            onColorChange={onColorChange}
-          />
+      <CommonPopover
+        open={checked}
+        content={
+          <ScreenshotsColor value={color} onChange={onColorChange} />
         }
-      />
+      >
+        <ScreenshotsButton
+          title={lang.operation_text_title}
+          icon='Text'
+          checked={checked}
+          onClick={onSelectText}
+        />
+      </CommonPopover>
       {checked && textareaBounds && (
         <ScreenshotsTextarea
           x={textareaBounds.x}

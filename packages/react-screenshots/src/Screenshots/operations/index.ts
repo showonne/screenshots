@@ -10,4 +10,4 @@ import Arrow from './Arrow'
 import Ellipse from './Ellipse'
 import Rectangle from './Rectangle'
 
-export default [Rectangle, Ellipse, Arrow, Brush, Text, Mosaic, '|', Undo, Redo, '|', Save, Cancel, Ok]
+export default [Rectangle, Ellipse, Arrow, '|', Text, Brush, Mosaic, '|', Undo, Redo, '|', Save, Cancel, Ok]

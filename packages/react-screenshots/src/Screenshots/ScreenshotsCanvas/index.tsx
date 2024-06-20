@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
-  useRef,
+  useRef
 } from 'react'
 import useBounds from '../hooks/useBounds'
 import useCursor from '../hooks/useCursor'
@@ -91,7 +91,7 @@ export default memo(
         if (e.button !== 0 || !bounds) {
           return
         }
-        console.warn('down operation', operation);
+        console.warn('down operation', operation)
 
         if (!operation) {
           resizeOrMoveRef.current = resizeOrMove
@@ -100,10 +100,10 @@ export default memo(
             y: e.clientY
           }
           boundsRef.current = {
-            x: bounds.x * 1,
-            y: bounds.y * 1,
-            width: bounds.width * 1,
-            height: bounds.height * 1
+            x: bounds.x,
+            y: bounds.y,
+            width: bounds.width,
+            height: bounds.height
           }
         } else {
           const draw = isPointInDraw(
@@ -111,10 +111,10 @@ export default memo(
             canvasRef.current,
             history,
             e.nativeEvent,
-            scale,
+            scale
           )
+          console.warn('draw', draw)
 
-          console.warn('mousedown ??', bounds, history, draw)
           if (draw) {
             emiter.emit('drawselect', draw, e.nativeEvent)
           } else {
@@ -227,9 +227,7 @@ export default memo(
             : 'none'
         }}
       >
-        <div className='screenshots-canvas-body'
-
-        >
+        <div className='screenshots-canvas-body'>
           {/* 保证一开始就显示，减少加载时间 */}
           <img
             className='screenshots-canvas-image'

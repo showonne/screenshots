@@ -14,7 +14,7 @@ export default function Undo (): ReactElement {
   return (
     <ScreenshotsButton
       title={lang.operation_undo_title}
-      icon='icon-undo'
+      icon='Undo'
       disabled={history.index === -1}
       onClick={onClick}
     />

@@ -41,7 +41,7 @@ export default defineConfig(({ command, mode }) => {
           fileName: format => `react-screenshots.${format}.js`
         },
         rollupOptions: {
-          external: ['react', 'react-dom']
+          external: ['react', 'react-dom', 'antd']
         }
       },
       plugins: [

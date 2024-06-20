@@ -5,6 +5,7 @@ import { drawDragCircle } from '../utils'
 export function getEditedRectangleData (action: HistoryItemSource<RectangleData, RectangleEditData>) {
   let { x1, y1, x2, y2 } = action.data
 
+  // xx
   action.editHistory.forEach(({ data }) => {
     const x = data.x2 - data.x1
     const y = data.y2 - data.y1

@@ -31,7 +31,7 @@ export default function App (): ReactElement {
   const screenshotsRef = useRef<ScreenshotsRef>(null)
   const containRef = useRef<HTMLDivElement>()
   const [rect, setRect] = useState({ height: 0, width: 0 })
-  const [mode] = useState('editor')
+  const [mode] = useState('screenshots')
 
   useEffect(() => {
     if (containRef.current) {
@@ -41,7 +41,7 @@ export default function App (): ReactElement {
   }, [containRef.current])
 
   const [scale, setScale] = useState(1)
-  
+
   const handleScaleChange = (scale: number) => {
     setScale(scale)
   }
@@ -51,30 +51,30 @@ export default function App (): ReactElement {
 
   const setSize = (size: number) => {
     console.log(size)
-    screenshotsRef.current.updateSize(size)
+    // screenshotsRef.current!.updateSize(size)
   }
 
   const setColor = (color: string) => {
     _setColor(color)
-    screenshotsRef.current.updateColor(color)
+    screenshotsRef.current!.updateColor(color)
   }
 
   const [operation, setOperation] = useState('Rectangle')
 
-  const switchOperation = (operation) => {
+  const switchOperation = (operation: string) => {
     setOperation(operation)
-    screenshotsRef.current.switchOperation(operation)
+    screenshotsRef.current!.switchOperation(operation)
   }
 
   const [history, setHistory] = useState({ redoDisabled: true, undoDisabled: true })
 
-  const handleHistoryChange = (status) => {
+  const handleHistoryChange = (status: any) => {
     setHistory(status)
   }
 
   return (
     <div className='body' ref={rootRef}>
-      <div className="drag-title" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <div className='drag-title' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <button onClick={() => location.reload()}>reload</button>
         <Popover
           open={operation === 'Rectangle'}
@@ -129,7 +129,7 @@ export default function App (): ReactElement {
           onScaleChange={handleScaleChange}
           onHistoryChange={handleHistoryChange}
         />
-        </div>
+      </div>
     </div>
   )
 }

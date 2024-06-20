@@ -214,10 +214,10 @@ export default function Mosaic (): ReactElement {
   return (
     <ScreenshotsButton
       title={lang.operation_mosaic_title}
-      icon='icon-mosaic'
+      icon='Mosaic'
       checked={checked}
       onClick={onSelectMosaic}
-      option={<ScreenshotsSize value={size} onChange={setSize} />}
+      // option={<ScreenshotsSize value={size} onChange={setSize} />}
     />
   )
 }

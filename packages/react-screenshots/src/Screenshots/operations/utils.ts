@@ -16,6 +16,8 @@ export function drawDragCircle (ctx: CanvasRenderingContext2D, x: number, y: num
 export function isHit<S, E> (ctx: CanvasRenderingContext2D, action: HistoryItemSource<S, E>, point: Point) {
   action.draw(ctx, action)
   const { data } = ctx.getImageData(point.x, point.y, 1, 1)
+  console.warn('ishit', action, point)
+
   return data.some(val => val !== 0)
 }
 

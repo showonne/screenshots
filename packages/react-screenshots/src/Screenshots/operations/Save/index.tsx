@@ -8,7 +8,7 @@ import useReset from '../../hooks/useReset'
 import ScreenshotsButton from '../../ScreenshotsButton'
 
 export default function Save (): ReactElement {
-  const { image, width, height, history, bounds, lang } = useStore()
+  const { image, width, height, history, bounds, lang, scale } = useStore()
   const canvasContextRef = useCanvasContextRef()
   const [, historyDispatcher] = useHistory()
   const call = useCall()
@@ -25,7 +25,8 @@ export default function Save (): ReactElement {
         width,
         height,
         history,
-        bounds
+        bounds,
+        scale
       }).then(blob => {
         call('onSave', blob, bounds)
         reset()
@@ -33,5 +34,5 @@ export default function Save (): ReactElement {
     })
   }, [canvasContextRef, historyDispatcher, image, width, height, history, bounds, call, reset])
 
-  return <ScreenshotsButton title={lang.operation_save_title} icon='icon-save' onClick={onClick} />
+  return <ScreenshotsButton title={lang.operation_save_title} icon='Save' onClick={onClick} />
 }

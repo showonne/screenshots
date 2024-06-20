@@ -12,6 +12,7 @@ export type EmiterRef = MutableRefObject<Emiter>
 export interface Point {
   x: number
   y: number
+  scale?: number
 }
 
 export enum HistoryItemType {

@@ -14,6 +14,8 @@ import { HistoryItemEdit, HistoryItemSource, HistoryItemType } from '../../types
 import { isHit, isHitCircle } from '../utils'
 import draw, { getEditedEllipseData } from './draw'
 import { useColor } from '../../hooks/useColor'
+import { CommonPopover } from '../../CommonPopover'
+import ScreenshotsColor from '../../ScreenshotsColor'
 
 export interface EllipseData {
   size: number
@@ -235,12 +237,16 @@ export default function Ellipse (): ReactElement {
   useCanvasMouseup(onMouseup)
 
   return (
-    <ScreenshotsButton
-      title={lang.operation_ellipse_title}
-      icon='icon-ellipse'
-      checked={checked}
-      onClick={onSelectEllipse}
-      option={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
-    />
+    <CommonPopover
+      content={<ScreenshotsColor value={color} onChange={setColor} />}
+      open={checked}
+    >
+      <ScreenshotsButton
+        title={lang.operation_ellipse_title}
+        icon='Ellipse'
+        checked={checked}
+        onClick={onSelectEllipse}
+      />
+    </CommonPopover>
   )
 }

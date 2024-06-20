@@ -7,7 +7,7 @@ export interface ColorProps {
 }
 
 export default memo(function ScreenshotsColor ({ value, onChange }: ColorProps): ReactElement {
-  const colors = ['#F84135', '#FFC814', '#01BC6A', '#056FFA', '#848E9C', '#000000']
+  const colors = ['#F84135', '#FFC814', '#01BC6A', '#056FFA', '#FFF', '#848E9C', '#000000']
   return (
     <div className='screenshots-color'>
       {colors.map(color => {

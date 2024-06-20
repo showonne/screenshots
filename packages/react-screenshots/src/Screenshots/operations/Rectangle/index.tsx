@@ -15,6 +15,9 @@ import { isHit, isHitCircle } from '../utils'
 import draw, { getEditedRectangleData } from './draw'
 import useStore from '../../hooks/useStore'
 import { useColor } from '../../hooks/useColor'
+import { Popover } from 'antd'
+import ScreenshotsColor from '../../ScreenshotsColor'
+import { CommonPopover } from '../../CommonPopover'
 
 export interface RectangleData {
   size: number
@@ -23,6 +26,7 @@ export interface RectangleData {
   y1: number
   x2: number
   y2: number
+  scale?: number
 }
 
 export enum RectangleEditType {
@@ -183,10 +187,6 @@ export default function Rectangle (): ReactElement {
         draw,
         isHit
       }
-
-      console.warn(
-        'left', left, 'top', top
-      )
     },
     [checked, size, color, canvasContextRef, scale]
   )
@@ -208,10 +208,10 @@ export default function Rectangle (): ReactElement {
         }
       } else if (rectangleRef.current) {
         const { left, top } = canvasContextRef.current.canvas.getBoundingClientRect()
-        console.log('left2,', left, 'top2', top)
         const rectangleData = rectangleRef.current.data
         rectangleData.x2 = (e.clientX - left) / scale
         rectangleData.y2 = (e.clientY - top) / scale
+        rectangleData.scale = scale
 
         if (history.top !== rectangleRef.current) {
           historyDispatcher.push(rectangleRef.current)
@@ -242,12 +242,16 @@ export default function Rectangle (): ReactElement {
   useCanvasMouseup(onMouseup)
 
   return (
-    <ScreenshotsButton
-      title={lang.operation_rectangle_title}
-      icon='icon-rectangle'
-      checked={checked}
-      onClick={onSelectRectangle}
-      option={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
-    />
+    <CommonPopover
+      content={<ScreenshotsColor value={color} onChange={setColor} />}
+      open={checked}
+    >
+      <ScreenshotsButton
+        title={lang.operation_rectangle_title}
+        icon='Rectangle'
+        checked={checked}
+        onClick={onSelectRectangle}
+      />
+    </CommonPopover>
   )
 }

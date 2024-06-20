@@ -14,6 +14,8 @@ import useDrawSelect from '../../hooks/useDrawSelect'
 import draw, { getEditedArrowData } from './draw'
 import useLang from '../../hooks/useLang'
 import { useColor } from '../../hooks/useColor'
+import { CommonPopover } from '../../CommonPopover'
+import ScreenshotsColor from '../../ScreenshotsColor'
 
 export interface ArrowData {
   size: number
@@ -183,12 +185,16 @@ export default function Arrow (): ReactElement {
   useCanvasMouseup(onMouseup)
 
   return (
-    <ScreenshotsButton
-      title={lang.operation_arrow_title}
-      icon='icon-arrow'
-      checked={checked}
-      onClick={onSelectArrow}
-      option={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
-    />
+    <CommonPopover
+      open={checked}
+      content={<ScreenshotsColor value={color} onChange={setColor} />}
+    >
+      <ScreenshotsButton
+        title={lang.operation_arrow_title}
+        icon='Arrow'
+        checked={checked}
+        onClick={onSelectArrow}
+      />
+    </CommonPopover>
   )
 }

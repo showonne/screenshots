@@ -14,6 +14,8 @@ import { isHit } from '../utils'
 import draw from './draw'
 import useLang from '../../hooks/useLang'
 import { useColor } from '../../hooks/useColor'
+import { CommonPopover } from '../../CommonPopover'
+import ScreenshotsColor from '../../ScreenshotsColor'
 
 export interface BrushData {
   size: number
@@ -159,12 +161,18 @@ export default function Brush (): ReactElement {
   useCanvasMouseup(onMouseup)
 
   return (
-    <ScreenshotsButton
-      title={lang.operation_brush_title}
-      icon='icon-brush'
-      checked={checked}
-      onClick={onSelectBrush}
-      option={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
-    />
+    <CommonPopover
+      open={checked}
+      content={
+        <ScreenshotsColor value={color} onChange={setColor} />
+      }
+    >
+      <ScreenshotsButton
+        title={lang.operation_brush_title}
+        icon='Brush'
+        checked={checked}
+        onClick={onSelectBrush}
+      />
+    </CommonPopover>
   )
 }

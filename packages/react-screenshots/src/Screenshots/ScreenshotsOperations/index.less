@@ -9,17 +9,25 @@
   &-buttons {
     display: flex;
     align-items: center;
-    padding: 3px;
-    border-radius: 2px;
-    border: 1px solid #ddd;
-    background-color: #fff;
+    height: 24px;
+    // padding: 3px;
+    padding: 4px 8px 4px 8px;
+    // border: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 1);
     overflow: hidden;
+    border-radius: 4px;
+    gap: 12px;
+    
+    box-shadow: 0px 3px 6px 0px rgba(24, 26, 32, 0.08),
+    0px 7px 14px 0px rgba(71, 77, 87, 0.08),
+    0px 0px 1px 0px rgba(24, 26, 32, 0.1);
+
   }
 
   &-divider {
     background-color: #ddd;
     width: 1px;
-    height: @button-size;
+    height: 16px;
     margin: 0 3px;
   }
 }

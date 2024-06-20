@@ -26,11 +26,18 @@ export default function isPointInDraw (
 
   const stack = [...history.stack.slice(0, history.index + 1)]
 
-  return stack.reverse().find(item => {
+  console.log('bounds', bounds)
+  const draw = stack.reverse().find(item => {
     if (item.type !== HistoryItemType.Source) {
       return false
     }
     ctx.clearRect(0, 0, bounds.width, bounds.height)
-    return item.isHit?.(ctx, item, { x, y })
+    return item.isHit?.(ctx, item, { x, y, scale })
   })
+
+  if (draw) {
+    // debugger
+  }
+
+  return draw
 }

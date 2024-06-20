@@ -1,20 +1,23 @@
 @import '../var.less';
 
 .screenshots-button {
-  width: @button-size;
-  height: @button-size;
-  line-height: @button-size;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
   color: #333;
   font-size: 18px;
   text-align: center;
-  margin: 0 3px;
+  // margin: 0 3px;
   vertical-align: middle;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &-checked,
   &:hover {
-    background-color: #eee;
-    outline: 1px solid #777;
+    background-color: #eaecef;
+    outline: 1px solid #b8bdc5;
   }
 
   &-disabled {

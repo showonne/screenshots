@@ -1,6 +1,6 @@
 import React, { MouseEvent, ReactElement, forwardRef, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
 import composeImage from './composeImage'
-import './icons/iconfont.less'
+// import './icons/iconfont.less'
 import './screenshots.less'
 import ScreenshotsBackground, { ScreenshotsBackgroundRef } from './ScreenshotsBackground'
 import ScreenshotsCanvas from './ScreenshotsCanvas'
@@ -10,7 +10,7 @@ import { Bounds, Emiter, History, HistoryItemType, Point } from './types'
 import useGetLoadedImage from './useGetLoadedImage'
 import zhCN, { Lang } from './zh_CN'
 import { useEventEmitter, useMemoizedFn, useThrottleFn } from 'ahooks'
-import mitt from 'mitt'
+import mitt, { Emitter, EventType } from 'mitt'
 import useHistory from './hooks/useHistory'
 
 export interface ScreenshotsProps {
@@ -22,22 +22,23 @@ export interface ScreenshotsProps {
   mode: 'screenshots' | 'editor'
   onScaleChange?: (scale: number) => void
   onHistoryChange?: (status: { redoDisabled: boolean, undoDisabled: boolean }) => void
-
   [key: string]: unknown
 }
 
 export interface ScreenshotsRef {
   manualSelect: (p1: Point, p2: Point) => void
   updateScale: (delta: number) => void
-  updateSize: (size: number) => void
+  // updateSize: (size: number) => void
   updateColor: (color: string) => void
   redo: () => void
   undo: () => void
+  // enum
+  switchOperation: (operation: string) => void
 }
 
-const globalEvents = mitt()
+const globalEvents: Emitter<Record<EventType, unknown>> = mitt()
 
-export default forwardRef(function Screenshots({ url, container, lang, className, height: initHeight, width: initWidth, mode = 'screenshots', onHistoryChange, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
+export default forwardRef(function Screenshots ({ url, container, lang, className, height: initHeight, width: initWidth, mode = 'screenshots', onHistoryChange, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
   const image = useGetLoadedImage(url)
   const canvasContextRef = useRef<CanvasRenderingContext2D>(null)
   const emiterRef = useRef<Emiter>({})
@@ -55,8 +56,8 @@ export default forwardRef(function Screenshots({ url, container, lang, className
   const backgroundRef = useRef<ScreenshotsBackgroundRef>(null)
   const scaleHandlerRef = useRef<HTMLDivElement>(null)
 
-  const width = initWidth * scale;
-  const height = initHeight * scale;
+  const width = initWidth * scale
+  const height = initHeight * scale
 
   const store = {
     url,
@@ -76,7 +77,7 @@ export default forwardRef(function Screenshots({ url, container, lang, className
     cursor,
     operation,
     mode,
-    globalEvents,
+    globalEvents
   }
 
   const call = useCallback(
@@ -126,7 +127,7 @@ export default forwardRef(function Screenshots({ url, container, lang, className
           height,
           history,
           bounds,
-          scale,
+          scale
         }).then(blob => {
           call('onOk', blob, bounds)
           reset()
@@ -144,7 +145,7 @@ export default forwardRef(function Screenshots({ url, container, lang, className
           height,
           history,
           bounds: targetBounds,
-          scale,
+          scale
         }).then(blob => {
           call('onOk', blob, targetBounds)
           reset()
@@ -173,26 +174,15 @@ export default forwardRef(function Screenshots({ url, container, lang, className
 
   const { run: onWheel } = useThrottleFn((event: WheelEvent) => {
     if (event.ctrlKey) {
-      event.preventDefault(); // 阻止默认的缩放处理
+      event.preventDefault() // 阻止默认的缩放处理
 
       // deltaY值表示滚轮的方向和距离，负值表示放大，正值表示缩小
       const delta = event.deltaY < 0 ? 0.1 : -0.1
-      setScale(prev => prev + delta)
+      setScale(prev => Number((prev + delta).toFixed(2)))
 
       props.onScaleChange?.(scale + delta)
     }
   }, { wait: 50 })
-
-  useEffect(() => {
-    if (mode !== 'editor') return
-    if (scaleHandlerRef.current) {
-      scaleHandlerRef.current.addEventListener('wheel', onWheel);
-    }
-    manualSelect({ x: 0, y: 0 }, { x: width, y: height })
-
-    setOperation('Rectangle')
-    setCursor('crosshair')
-  }, [mode])
 
   const manualSelect = (p1: Point, p2: Point) => {
     backgroundRef.current?.manualSelect(p1, p2)
@@ -203,8 +193,8 @@ export default forwardRef(function Screenshots({ url, container, lang, className
     props.onScaleChange?.(scale + delta)
   }
 
-  const updateSize = (size: number) => {
-  }
+  // const updateSize = (size: number) => {
+  // }
 
   const updateColor = (color: string) => {
     globalEvents.emit('update:color', color)
@@ -217,8 +207,6 @@ export default forwardRef(function Screenshots({ url, container, lang, className
     // todo
     setCursor('crosshair')
   }
-
-
 
   const redo = useMemoizedFn(() => {
     const { index, stack } = history
@@ -257,6 +245,17 @@ export default forwardRef(function Screenshots({ url, container, lang, className
   })
 
   useEffect(() => {
+    if (mode !== 'editor') return
+    if (scaleHandlerRef.current) {
+      scaleHandlerRef.current.addEventListener('wheel', onWheel)
+    }
+    manualSelect({ x: 0, y: 0 }, { x: width, y: height })
+
+    setOperation('Rectangle')
+    setCursor('crosshair')
+  }, [mode])
+
+  useEffect(() => {
     if (onHistoryChange) {
       const redoDisabled = !history.stack.length || history.stack.length - 1 === history.index
       const undoDisabled = history.index === -1
@@ -272,7 +271,7 @@ export default forwardRef(function Screenshots({ url, container, lang, className
     return {
       manualSelect,
       updateScale,
-      updateSize,
+      // updateSize,
       updateColor,
       switchOperation,
       redo,
@@ -282,10 +281,11 @@ export default forwardRef(function Screenshots({ url, container, lang, className
 
   return (
     <ScreenshotsContext.Provider value={{ store, dispatcher }}>
-      <div className='root-wrapper' ref={scaleHandlerRef}
+      <div
+        className='root-wrapper' ref={scaleHandlerRef}
         style={{
           width,
-          height,
+          height
           // alignSelf: 'strench',
         }}
       >
