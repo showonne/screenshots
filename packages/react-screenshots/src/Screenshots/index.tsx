@@ -187,9 +187,10 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
 
       // deltaY值表示滚轮的方向和距离，负值表示放大，正值表示缩小
       const delta = event.deltaY < 0 ? 0.1 : -0.1
-      setScale(prev => Number((prev + delta).toFixed(2)))
 
-      props.onScaleChange?.(scale + delta)
+      const _scale = parseFloat((scale + delta).toFixed(2))
+      setScale(_scale)
+      props.onScaleChange?.(_scale)
     }
   }, { wait: 50 })
 
@@ -198,8 +199,9 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
   }
 
   const updateScale = (delta: number) => {
-    setScale(prev => prev + delta)
-    props.onScaleChange?.(scale + delta)
+    const _scale = parseFloat((scale + delta).toFixed(2))
+    setScale(_scale)
+    props.onScaleChange?.(_scale)
   }
 
   // const updateSize = (size: number) => {

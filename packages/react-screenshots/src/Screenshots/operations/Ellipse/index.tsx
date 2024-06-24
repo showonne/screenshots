@@ -16,6 +16,7 @@ import draw, { getEditedEllipseData } from './draw'
 import { useColor } from '../../hooks/useColor'
 import { CommonPopover } from '../../CommonPopover'
 import ScreenshotsColor from '../../ScreenshotsColor'
+import useStore from '../../hooks/useStore'
 
 export interface EllipseData {
   size: number
@@ -56,6 +57,7 @@ export default function Ellipse (): ReactElement {
   const ellipseRef = useRef<HistoryItemSource<EllipseData, EllipseEditData> | null>(null)
   const ellipseEditRef = useRef<HistoryItemEdit<EllipseEditData, EllipseData> | null>(null)
   const { color, setColor } = useColor()
+  const { scale } = useStore()
 
   const checked = operation === 'Ellipse'
 
@@ -89,56 +91,56 @@ export default function Ellipse (): ReactElement {
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: (x1 + x2) / 2,
           y: y1
-        })
+        }, scale)
       ) {
         type = EllipseEditType.ResizeTop
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x2,
           y: y1
-        })
+        }, scale)
       ) {
         type = EllipseEditType.ResizeRightTop
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x2,
           y: (y1 + y2) / 2
-        })
+        }, scale)
       ) {
         type = EllipseEditType.ResizeRight
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x2,
           y: y2
-        })
+        }, scale)
       ) {
         type = EllipseEditType.ResizeRightBottom
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: (x1 + x2) / 2,
           y: y2
-        })
+        }, scale)
       ) {
         type = EllipseEditType.ResizeBottom
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x1,
           y: y2
-        })
+        }, scale)
       ) {
         type = EllipseEditType.ResizeLeftBottom
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x1,
           y: (y1 + y2) / 2
-        })
+        }, scale)
       ) {
         type = EllipseEditType.ResizeLeft
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x1,
           y: y1
-        })
+        }, scale)
       ) {
         type = EllipseEditType.ResizeLeftTop
       }

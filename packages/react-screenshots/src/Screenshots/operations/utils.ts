@@ -21,15 +21,15 @@ export function isHit<S, E> (ctx: CanvasRenderingContext2D, action: HistoryItemS
   return data.some(val => val !== 0)
 }
 
-export function isHitCircle (canvas: HTMLCanvasElement | null, e: MouseEvent, point: Point) {
+export function isHitCircle (canvas: HTMLCanvasElement | null, e: MouseEvent, point: Point, scale: number) {
   if (!canvas) {
     return false
   }
 
   const { left, top } = canvas.getBoundingClientRect()
 
-  const x = e.clientX - left
-  const y = e.clientY - top
+  const x = (e.clientX - left) / scale
+  const y = (e.clientY - top) / scale
 
   // 点到圆心的距离是否小于半径
   return (point.x - x) ** 2 + (point.y - y) ** 2 < CircleRadius ** 2

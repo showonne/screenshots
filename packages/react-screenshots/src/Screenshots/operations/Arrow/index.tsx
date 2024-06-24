@@ -16,6 +16,7 @@ import useLang from '../../hooks/useLang'
 import { useColor } from '../../hooks/useColor'
 import { CommonPopover } from '../../CommonPopover'
 import ScreenshotsColor from '../../ScreenshotsColor'
+import useStore from '../../hooks/useStore'
 
 export interface ArrowData {
   size: number
@@ -50,6 +51,7 @@ export default function Arrow (): ReactElement {
   const arrowRef = useRef<HistoryItemSource<ArrowData, ArrowEditData> | null>(null)
   const arrowEditRef = useRef<HistoryItemEdit<ArrowEditData, ArrowData> | null>(null)
   const { color, setColor } = useColor()
+  const { scale } = useStore()
 
   const checked = operation === 'Arrow'
 
@@ -80,15 +82,15 @@ export default function Arrow (): ReactElement {
       if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x1,
-          y: y1
-        })
+          y: y1,
+        }, scale)
       ) {
         type = ArrowEditType.MoveStart
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x2,
-          y: y2
-        })
+          y: y2,
+        }, scale)
       ) {
         type = ArrowEditType.MoveEnd
       }

@@ -5,7 +5,7 @@ export default function isPointInDraw (
   canvas: HTMLCanvasElement | null,
   history: History,
   e: MouseEvent,
-  scale: number
+  scale: number // current scale
 ) {
   if (!canvas) {
     return false
@@ -21,17 +21,17 @@ export default function isPointInDraw (
   }
 
   const { left, top } = canvas.getBoundingClientRect()
-  const x = e.clientX - left
-  const y = e.clientY - top
+  const x = (e.clientX - left) / scale
+  const y = (e.clientY - top) / scale
 
   const stack = [...history.stack.slice(0, history.index + 1)]
 
-  console.log('bounds', bounds)
   const draw = stack.reverse().find(item => {
     if (item.type !== HistoryItemType.Source) {
       return false
     }
     ctx.clearRect(0, 0, bounds.width, bounds.height)
+    console.warn('item?', item, x, y, scale)
     return item.isHit?.(ctx, item, { x, y, scale })
   })
 

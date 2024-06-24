@@ -68,9 +68,9 @@ export default function App (): ReactElement {
     <div className='body' ref={rootRef}>
       <div className='drag-title' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <button onClick={() => location.reload()}>reload</button>
-        <Button onClick={() => screenshotsRef.current.updateScale(-0.1) }>+</Button>
-        <input value={scale} onChange={(e) => setScale(e.target.value)} />
-        <Button onClick={() => screenshotsRef.current.updateScale(0.1) }>+</Button>
+        <Button onClick={() => screenshotsRef.current!.updateScale(-0.1) }>-</Button>
+        <input value={scale} onChange={(e) => setScale(Number(e.target.value))} />
+        <Button onClick={() => screenshotsRef.current!.updateScale(0.1) }>+</Button>
         <Popover
           open={operation === 'Rectangle'}
           content={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
@@ -104,6 +104,7 @@ export default function App (): ReactElement {
         <Button onClick={() => switchOperation('Mosaic')}>Mosaic</Button>
         <Button disabled={history.undoDisabled} onClick={() => screenshotsRef.current?.undo()}>undo</Button>
         <Button disabled={history.redoDisabled} onClick={() => screenshotsRef.current?.redo()}>redo</Button>
+        <Button onClick={() => screenshotsRef.current!.invoke('onOk') }>Ok</Button>
       </div>
       <div
         className='image-container'
