@@ -3,7 +3,7 @@ import Screenshots, { ScreenshotsRef } from '../Screenshots'
 import { Bounds } from '../Screenshots/types'
 import './app.less'
 import imageUrl from './basic.jpg'
-import { Button, Popover } from 'antd'
+import { Button, Divider, Popover } from 'antd'
 import ScreenshotsSizeColor from '../Screenshots/ScreenshotsSizeColor'
 
 export default function App (): ReactElement {
@@ -30,7 +30,7 @@ export default function App (): ReactElement {
   const rootRef = useRef<HTMLDivElement>(null)
   const screenshotsRef = useRef<ScreenshotsRef>(null)
   const containRef = useRef<HTMLDivElement>()
-  const [mode] = useState('screenshots')
+  const [mode] = useState('editor')
 
   const [scale, setScale] = useState(1)
 
@@ -68,6 +68,9 @@ export default function App (): ReactElement {
     <div className='body' ref={rootRef}>
       <div className='drag-title' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <button onClick={() => location.reload()}>reload</button>
+        <Button onClick={() => screenshotsRef.current.updateScale(-0.1) }>+</Button>
+        <input value={scale} onChange={(e) => setScale(e.target.value)} />
+        <Button onClick={() => screenshotsRef.current.updateScale(0.1) }>+</Button>
         <Popover
           open={operation === 'Rectangle'}
           content={<ScreenshotsSizeColor size={size} color={color} onSizeChange={setSize} onColorChange={setColor} />}
@@ -107,6 +110,7 @@ export default function App (): ReactElement {
         ref={containRef as any}
       >
         <Screenshots
+          scaleable={true}
           mode={mode}
           ref={screenshotsRef}
           url={imageUrl}
