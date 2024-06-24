@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import styles from './style.module.less'
+import styles from './style.module.css'
 interface IconProps extends React.SVGProps<SVGSVGElement> {
     size?: string | number;
     width?: string | number;
@@ -35,7 +35,7 @@ export default function Mosaic (props: IconProps) {
       ref={root}
       width={_width}
       height={_height}
-      viewBox='0 0 16 16'
+      viewBox='0 0 14 14'
       preserveAspectRatio='xMidYMid meet'
       fill='none'
       role='presentation'
@@ -43,7 +43,7 @@ export default function Mosaic (props: IconProps) {
       className={`${className || ''} ${spin ? styles.spin : ''} ${rtl ? styles.rtl : ''}`.trim()}
       {...rest}
     >
-      <g><path data-follow-stroke='currentColor' d='M4 2 2 4m12 8-2 2M7.333 2 2 7.333M10.667 2 2 10.667M14 2 2 14m12-8.667L5.333 14M14 8.667 8.667 14' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /></g>
+      <g><path data-follow-stroke='currentColor' d='M3 1 1 3m12 8-2 2M6.333 1 1 6.333M9.667 1 1 9.667M13 1 1 13m12-8.667L4.333 13M13 7.667 7.667 13' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /></g>
     </svg>
   )
 }

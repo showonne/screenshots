@@ -194,6 +194,7 @@ export default function Arrow (): ReactElement {
         icon='Arrow'
         checked={checked}
         onClick={onSelectArrow}
+        size={12}
       />
     </CommonPopover>
   )

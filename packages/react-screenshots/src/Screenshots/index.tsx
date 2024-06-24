@@ -9,9 +9,10 @@ import ScreenshotsOperations from './ScreenshotsOperations'
 import { Bounds, Emiter, History, HistoryItemType, Point } from './types'
 import useGetLoadedImage from './useGetLoadedImage'
 import zhCN, { Lang } from './zh_CN'
-import { useEventEmitter, useMemoizedFn, useThrottleFn } from 'ahooks'
+import { useMemoizedFn, useThrottleFn } from 'ahooks'
 import mitt, { Emitter, EventType } from 'mitt'
-import useHistory from './hooks/useHistory'
+
+export { default as ScreenshotsColor } from './ScreenshotsColor'
 
 export interface ScreenshotsProps {
   url?: string
@@ -22,8 +23,12 @@ export interface ScreenshotsProps {
   mode: 'screenshots' | 'editor'
   onScaleChange?: (scale: number) => void
   onHistoryChange?: (status: { redoDisabled: boolean, undoDisabled: boolean }) => void
+  onOperationChange?: (operation: string) => void
+  scaleable?: boolean
   [key: string]: unknown
 }
+
+type IEventType = 'onOk' | 'onCancel' | 'onSave'
 
 export interface ScreenshotsRef {
   manualSelect: (p1: Point, p2: Point) => void
@@ -34,11 +39,12 @@ export interface ScreenshotsRef {
   undo: () => void
   // enum
   switchOperation: (operation: string) => void
+  invoke: (event: IEventType) => void
 }
 
 const globalEvents: Emitter<Record<EventType, unknown>> = mitt()
 
-export default forwardRef(function Screenshots ({ url, container, lang, className, height: initHeight, width: initWidth, mode = 'screenshots', onHistoryChange, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
+export default forwardRef(function Screenshots ({ url, container, lang, className, height: initHeight, width: initWidth, mode = 'screenshots', onHistoryChange, onOperationChange, scaleable = false, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
   const image = useGetLoadedImage(url)
   const canvasContextRef = useRef<CanvasRenderingContext2D>(null)
   const emiterRef = useRef<Emiter>({})
@@ -120,6 +126,8 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
       if (e.button !== 0 || !image) {
         return
       }
+      if (mode !== 'screenshots') return
+
       if (bounds && canvasContextRef.current) {
         composeImage({
           image,
@@ -152,7 +160,7 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
         })
       }
     },
-    [image, history, bounds, width, height, call]
+    [image, history, bounds, width, height, call, mode]
   )
 
   const onContextMenu = useCallback(
@@ -160,11 +168,12 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
       if (e.button !== 2) {
         return
       }
+      if (mode === 'editor') return
       e.preventDefault()
       call('onCancel')
       reset()
     },
-    [call]
+    [call, mode]
   )
 
   // url变化，重置截图区域
@@ -246,14 +255,22 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
 
   useEffect(() => {
     if (mode !== 'editor') return
-    if (scaleHandlerRef.current) {
-      scaleHandlerRef.current.addEventListener('wheel', onWheel)
-    }
-    manualSelect({ x: 0, y: 0 }, { x: width, y: height })
 
+    // default operation
+    manualSelect({ x: 0, y: 0 }, { x: width, y: height })
     setOperation('Rectangle')
     setCursor('crosshair')
   }, [mode])
+
+  useEffect(() => {
+    if (!scaleable) return
+
+    if (scaleHandlerRef.current) {
+      scaleHandlerRef.current.addEventListener('wheel', onWheel)
+    }
+
+    return () => scaleHandlerRef.current?.removeEventListener('wheel', onWheel)
+  }, [scaleable])
 
   useEffect(() => {
     if (onHistoryChange) {
@@ -267,6 +284,42 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
     }
   }, [history])
 
+  const invoke = useCallback((eventName: IEventType) => {
+    if (eventName === 'onCancel') return call(eventName)
+
+    history.stack.forEach(item => {
+      if (item.type === HistoryItemType.Source) {
+        item.isSelected = false
+      }
+    })
+
+    setHistory?.({ ...history })
+
+    setTimeout(() => {
+      if (!canvasContextRef.current || !image || !bounds) {
+        return
+      }
+      composeImage({
+        image,
+        width,
+        height,
+        history,
+        bounds,
+        scale
+      }).then(blob => {
+        call(eventName, blob, bounds)
+        if (mode === 'editor') return
+        reset()
+      })
+    })
+  }, [canvasContextRef, history, image, width, height, history, bounds, call, reset, mode])
+
+  useEffect(() => {
+    if (operation) {
+      onOperationChange?.(operation)
+    }
+  }, [operation])
+
   useImperativeHandle(ref, () => {
     return {
       manualSelect,
@@ -275,7 +328,8 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
       updateColor,
       switchOperation,
       redo,
-      undo
+      undo,
+      invoke
     }
   })
 

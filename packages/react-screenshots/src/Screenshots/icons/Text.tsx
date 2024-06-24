@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import styles from './style.module.less'
+import styles from './style.module.css'
 interface IconProps extends React.SVGProps<SVGSVGElement> {
     size?: string | number;
     width?: string | number;
@@ -35,7 +35,7 @@ export default function Text (props: IconProps) {
       ref={root}
       width={_width}
       height={_height}
-      viewBox='0 0 16 16'
+      viewBox='0 0 10 12'
       preserveAspectRatio='xMidYMid meet'
       fill='none'
       role='presentation'
@@ -43,7 +43,7 @@ export default function Text (props: IconProps) {
       className={`${className || ''} ${spin ? styles.spin : ''} ${rtl ? styles.rtl : ''}`.trim()}
       {...rest}
     >
-      <g><path data-follow-stroke='currentColor' d='M4 3.5h8m-4 1v8' strokeWidth='1.67' strokeLinecap='round' stroke={_stroke} /></g>
+      <g><path data-follow-stroke='currentColor' d='M1 1.5h8m-4 1v8' strokeWidth='1.67' strokeLinecap='round' stroke={_stroke} /></g>
     </svg>
   )
 }

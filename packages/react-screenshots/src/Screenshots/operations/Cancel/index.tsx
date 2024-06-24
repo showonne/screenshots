@@ -14,5 +14,5 @@ export default function Cancel (): ReactElement {
     reset()
   }, [call, reset])
 
-  return <ScreenshotsButton title={lang.operation_cancel_title} icon='Cancel' onClick={onClick} />
+  return <ScreenshotsButton size={12} title={lang.operation_cancel_title} icon='Cancel' onClick={onClick} />
 }

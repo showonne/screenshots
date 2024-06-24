@@ -8,17 +8,7 @@ import React, {
   FC
 } from 'react'
 import './index.less'
-import Rectangle from '../icons/Rectangle'
-import Arrow from '../icons/Arrow'
-import Ellipse from '../icons/Ellipse'
-import Mosaic from '../icons/Mosaic'
-import Ok from '../icons/Ok'
-import Redo from '../icons/Redo'
-import Undo from '../icons/Undo'
-import Save from '../icons/Save'
-import Text from '../icons/Text'
-import Brush from '../icons/Brush'
-import Cancel from '../icons/Cancel'
+import { ArrowIcon as Arrow, BrushIcon as Brush, CancelIcon as Cancel, EllipseIcon as Ellipse, MosaicIcon as Mosaic, OkIcon as Ok, RectangleIcon as Rectangle, RedoIcon as Redo, SaveIcon as Save, UndoIcon as Undo, TextIcon as Text } from '../icons'
 
 const ICONS_MAP = {
   Rectangle,
@@ -40,6 +30,7 @@ export interface ScreenshotsButtonProps {
   disabled?: boolean;
   option?: ReactNode;
   onClick?: (e: PointerEvent<HTMLDivElement>) => unknown;
+  size?: number
 }
 
 export default memo(function ScreenshotsButton ({
@@ -48,7 +39,8 @@ export default memo(function ScreenshotsButton ({
   checked,
   disabled,
   option,
-  onClick
+  onClick,
+  size = 14
 }: ScreenshotsButtonProps): ReactElement {
   const classNames = ['screenshots-button']
 
@@ -75,11 +67,6 @@ export default memo(function ScreenshotsButton ({
     return disabled ? 'rgba(183, 189, 198, 1)' : 'rgba(132, 142, 156, 1)'
   }, [disabled])
 
-  const onColorChange = () => {
-    // globalEvents.emit('update:color', color)
-  }
-  console.log(option)
-
   return (
     // <ScreenshotsOption open={checked} content={option}>
     <div
@@ -87,7 +74,7 @@ export default memo(function ScreenshotsButton ({
       title={title}
       onClick={onButtonClick}
     >
-      <Icon size={14} color={color} />
+      <Icon size={size} color={color} />
     </div>
     // </ScreenshotsOption>
   )

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import classes from './style.module.less'
+import styles from './style.module.css'
 interface IconProps extends React.SVGProps<SVGSVGElement> {
     size?: string | number;
     width?: string | number;
@@ -35,15 +35,15 @@ export default function Arrow (props: IconProps) {
       ref={root}
       width={_width}
       height={_height}
-      viewBox='0 0 16 16'
+      viewBox='0 0 10 10'
       preserveAspectRatio='xMidYMid meet'
       fill='none'
       role='presentation'
       xmlns='http://www.w3.org/2000/svg'
-      className={`${className || ''} ${spin ? classes.spin : ''} ${rtl ? classes.rtl : ''}`.trim()}
+      className={`${className || ''} ${spin ? styles.spin : ''} ${rtl ? styles.rtl : ''}`.trim()}
       {...rest}
     >
-      <g><path data-follow-stroke='currentColor' d='m11.936 3.929-6.5 7.575m6.5-7.575L6.3 4.422m5.635-.493.493 5.635' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /></g>
+      <g><path data-follow-stroke='currentColor' d='m7.936.929-6.5 7.575m6.5-7.575L2.3 1.422M7.936.929l.493 5.635' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /></g>
     </svg>
   )
 }

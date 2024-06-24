@@ -30,15 +30,7 @@ export default function App (): ReactElement {
   const rootRef = useRef<HTMLDivElement>(null)
   const screenshotsRef = useRef<ScreenshotsRef>(null)
   const containRef = useRef<HTMLDivElement>()
-  const [rect, setRect] = useState({ height: 0, width: 0 })
   const [mode] = useState('screenshots')
-
-  useEffect(() => {
-    if (containRef.current) {
-      const rect = containRef.current!.getBoundingClientRect()
-      setRect(rect)
-    }
-  }, [containRef.current])
 
   const [scale, setScale] = useState(1)
 

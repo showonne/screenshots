@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import styles from './style.module.less'
+import styles from './style.module.css'
 interface IconProps extends React.SVGProps<SVGSVGElement> {
     size?: string | number;
     width?: string | number;

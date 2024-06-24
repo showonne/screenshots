@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import styles from './style.module.less'
+import styles from './style.module.css'
 interface IconProps extends React.SVGProps<SVGSVGElement> {
     size?: string | number;
     width?: string | number;
@@ -35,7 +35,7 @@ export default function Brush (props: IconProps) {
       ref={root}
       width={_width}
       height={_height}
-      viewBox='0 0 16 16'
+      viewBox='0 0 13 12'
       preserveAspectRatio='xMidYMid meet'
       fill='none'
       role='presentation'
@@ -43,7 +43,7 @@ export default function Brush (props: IconProps) {
       className={`${className || ''} ${spin ? styles.spin : ''} ${rtl ? styles.rtl : ''}`.trim()}
       {...rest}
     >
-      <g><path data-follow-stroke='currentColor' d='M2.625 12.875v-2.167a2.167 2.167 0 1 1 2.167 2.167H2.625Z' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /><path data-follow-stroke='currentColor' d='M12.375 3.125A8.667 8.667 0 0 0 5.442 8.65m6.933-5.525a8.667 8.667 0 0 1-5.525 6.933' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /><path data-follow-stroke='currentColor' d='M6.742 6.375a4.875 4.875 0 0 1 2.383 2.383' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /></g>
+      <g><path data-follow-stroke='currentColor' d='M1.625 10.875V8.708a2.167 2.167 0 1 1 2.167 2.167H1.625Z' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /><path data-follow-stroke='currentColor' d='M11.375 1.125A8.667 8.667 0 0 0 4.442 6.65m6.933-5.525A8.667 8.667 0 0 1 5.85 8.058' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /><path data-follow-stroke='currentColor' d='M5.742 4.375a4.875 4.875 0 0 1 2.383 2.383' strokeWidth='1.67' strokeLinecap='round' strokeLinejoin='round' stroke={_stroke} /></g>
     </svg>
   )
 }
