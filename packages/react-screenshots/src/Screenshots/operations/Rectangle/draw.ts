@@ -7,8 +7,8 @@ export function getEditedRectangleData (action: HistoryItemSource<RectangleData,
 
   // xx
   action.editHistory.forEach(({ data }) => {
-    const x = data.x2 - data.x1
-    const y = data.y2 - data.y1
+    const x = (data.x2 - data.x1) / data.scale
+    const y = (data.y2 - data.y1) / data.scale
     if (data.type === RectangleEditType.Move) {
       x1 += x
       y1 += y

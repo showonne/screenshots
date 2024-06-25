@@ -91,7 +91,6 @@ export default memo(forwardRef(function ScreenshotsBackground (props, ref: Ref<S
       }
 
       if (isMoveRef.current) {
-        // console.warn('update bounds', pointRef.current, e.clientX, e.clientY)
         updateBounds(pointRef.current, {
           x: e.clientX,
           y: e.clientY

@@ -31,7 +31,6 @@ export default function isPointInDraw (
       return false
     }
     ctx.clearRect(0, 0, bounds.width, bounds.height)
-    console.warn('item?', item, x, y, scale)
     return item.isHit?.(ctx, item, { x, y, scale })
   })
 

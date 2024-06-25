@@ -29,6 +29,7 @@ export interface BrushEditData {
   y1: number
   x2: number
   y2: number
+  scale: number
 }
 
 export default function Brush (): ReactElement {
@@ -72,14 +73,15 @@ export default function Brush (): ReactElement {
           x1: e.clientX,
           y1: e.clientY,
           x2: e.clientX,
-          y2: e.clientY
+          y2: e.clientY,
+          scale
         },
         source: action as HistoryItemSource<BrushData, BrushEditData>
       }
 
       historyDispatcher.select(action)
     },
-    [selectBrush, historyDispatcher]
+    [selectBrush, historyDispatcher, scale]
   )
 
   const onMousedown = useCallback(
@@ -120,6 +122,7 @@ export default function Brush (): ReactElement {
       if (brushEditRef.current) {
         brushEditRef.current.data.x2 = e.clientX
         brushEditRef.current.data.y2 = e.clientY
+        brushEditRef.current.data.scale = scale
         if (history.top !== brushEditRef.current) {
           brushEditRef.current.source.editHistory.push(brushEditRef.current)
           historyDispatcher.push(brushEditRef.current)

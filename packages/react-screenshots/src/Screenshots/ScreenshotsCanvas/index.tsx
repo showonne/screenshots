@@ -91,7 +91,6 @@ export default memo(
         if (e.button !== 0 || !bounds) {
           return
         }
-        console.warn('down operation', operation)
 
         if (!operation) {
           resizeOrMoveRef.current = resizeOrMove
@@ -113,7 +112,6 @@ export default memo(
             e.nativeEvent,
             scale
           )
-          console.warn('draw', draw)
 
           if (draw) {
             emiter.emit('drawselect', draw, e.nativeEvent)

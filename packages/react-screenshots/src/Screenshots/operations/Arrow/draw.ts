@@ -5,8 +5,8 @@ import { drawDragCircle } from '../utils'
 export function getEditedArrowData (action: HistoryItemSource<ArrowData, ArrowEditData>) {
   let { x1, y1, x2, y2 } = action.data
   action.editHistory.forEach(({ data }) => {
-    const x = data.x2 - data.x1
-    const y = data.y2 - data.y1
+    const x = (data.x2 - data.x1) / data.scale
+    const y = (data.y2 - data.y1) / data.scale
     if (data.type === ArrowEditType.Move) {
       x1 += x
       y1 += y

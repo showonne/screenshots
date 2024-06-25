@@ -45,6 +45,7 @@ export interface EllipseEditData {
   y1: number
   x2: number
   y2: number
+  scale: number
 }
 
 export default function Ellipse (): ReactElement {
@@ -152,7 +153,8 @@ export default function Ellipse (): ReactElement {
           x1: e.clientX,
           y1: e.clientY,
           x2: e.clientX,
-          y2: e.clientY
+          y2: e.clientY,
+          scale
         },
         source
       }
@@ -199,6 +201,7 @@ export default function Ellipse (): ReactElement {
       if (ellipseEditRef.current) {
         ellipseEditRef.current.data.x2 = e.clientX
         ellipseEditRef.current.data.y2 = e.clientY
+        ellipseEditRef.current.data.scale = scale
         if (history.top !== ellipseEditRef.current) {
           ellipseEditRef.current.source.editHistory.push(ellipseEditRef.current)
           historyDispatcher.push(ellipseEditRef.current)

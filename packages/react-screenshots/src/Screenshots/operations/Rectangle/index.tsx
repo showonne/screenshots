@@ -47,6 +47,7 @@ export interface RectangleEditData {
   y1: number
   x2: number
   y2: number
+  scale: number
 }
 
 export default function Rectangle (): ReactElement {
@@ -153,7 +154,8 @@ export default function Rectangle (): ReactElement {
           x1: e.clientX,
           y1: e.clientY,
           x2: e.clientX,
-          y2: e.clientY
+          y2: e.clientY,
+          scale
         },
         source: action as HistoryItemSource<RectangleData, RectangleEditData>
       }
@@ -201,6 +203,7 @@ export default function Rectangle (): ReactElement {
       if (rectangleEditRef.current) {
         rectangleEditRef.current.data.x2 = e.clientX
         rectangleEditRef.current.data.y2 = e.clientY
+        rectangleEditRef.current.data.scale = scale
         if (history.top !== rectangleEditRef.current) {
           rectangleEditRef.current.source.editHistory.push(rectangleEditRef.current)
           historyDispatcher.push(rectangleEditRef.current)

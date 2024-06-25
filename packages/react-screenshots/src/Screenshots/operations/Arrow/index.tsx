@@ -39,6 +39,7 @@ export interface ArrowEditData {
   x2: number
   y1: number
   y2: number
+  scale: number
 }
 
 export default function Arrow (): ReactElement {
@@ -102,7 +103,8 @@ export default function Arrow (): ReactElement {
           x1: e.clientX,
           y1: e.clientY,
           x2: e.clientX,
-          y2: e.clientY
+          y2: e.clientY,
+          scale
         },
         source
       }
@@ -146,6 +148,7 @@ export default function Arrow (): ReactElement {
       if (arrowEditRef.current) {
         arrowEditRef.current.data.x2 = e.clientX
         arrowEditRef.current.data.y2 = e.clientY
+        arrowEditRef.current.data.scale = scale
         if (history.top !== arrowEditRef.current) {
           arrowEditRef.current.source.editHistory.push(arrowEditRef.current)
           historyDispatcher.push(arrowEditRef.current)

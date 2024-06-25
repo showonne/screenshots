@@ -10,8 +10,8 @@ export default function draw (ctx: CanvasRenderingContext2D, action: HistoryItem
 
   const distance = action.editHistory.reduce(
     (distance, { data }) => ({
-      x: distance.x + data.x2 - data.x1,
-      y: distance.y + data.y2 - data.y1
+      x: distance.x + (data.x2 - data.x1) / data.scale,
+      y: distance.y + (data.y2 - data.y1) / data.scale
     }),
     { x: 0, y: 0 }
   )
