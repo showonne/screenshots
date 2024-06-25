@@ -51,7 +51,7 @@ export default memo(
     props,
     ref
   ): ReactElement | null {
-    const { url, image, width, height, scale, editing } = useStore()
+    const { url, image, width, height, scale, editing, mode } = useStore()
     const prevScale = usePrevious(scale)
 
     const emiter = useEmiter()
@@ -220,8 +220,8 @@ export default memo(
       <div
         className='screenshots-canvas'
         style={{
-          width: (bounds?.width || 0) * scale,
-          height: (bounds?.height || 0) * scale,
+          width: mode === 'editor' ? width : (bounds?.width || 0) * scale,
+          height: mode === 'editor' ? height : (bounds?.height || 0) * scale,
           transform: bounds
             ? `translate(${bounds.x}px, ${bounds.y}px)`
             : 'none'
