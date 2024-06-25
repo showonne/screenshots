@@ -1,4 +1,4 @@
-# forked from https://github.com/nashaofu/screenshots
+# forked from https://github.com/nashaofu/screenshots, 在原有功能上支持了缩放和对普通图片编辑模式的支持
 
 # 📷 screenshots
 
