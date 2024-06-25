@@ -91,56 +91,56 @@ export default function Rectangle (): ReactElement {
       if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: (x1 + x2) / 2,
-          y: y1,
+          y: y1
         }, scale)
       ) {
         type = RectangleEditType.ResizeTop
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x2,
-          y: y1,
+          y: y1
         }, scale)
       ) {
         type = RectangleEditType.ResizeRightTop
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x2,
-          y: (y1 + y2) / 2,
+          y: (y1 + y2) / 2
         }, scale)
       ) {
         type = RectangleEditType.ResizeRight
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x2,
-          y: y2,
+          y: y2
         }, scale)
       ) {
         type = RectangleEditType.ResizeRightBottom
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: (x1 + x2) / 2,
-          y: y2,
+          y: y2
         }, scale)
       ) {
         type = RectangleEditType.ResizeBottom
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x1,
-          y: y2,
+          y: y2
         }, scale)
       ) {
         type = RectangleEditType.ResizeLeftBottom
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x1,
-          y: (y1 + y2) / 2,
+          y: (y1 + y2) / 2
         }, scale)
       ) {
         type = RectangleEditType.ResizeLeft
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x1,
-          y: y1,
+          y: y1
         }, scale)
       ) {
         type = RectangleEditType.ResizeLeftTop

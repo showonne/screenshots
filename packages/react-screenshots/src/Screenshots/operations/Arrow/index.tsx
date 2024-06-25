@@ -82,14 +82,14 @@ export default function Arrow (): ReactElement {
       if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x1,
-          y: y1,
+          y: y1
         }, scale)
       ) {
         type = ArrowEditType.MoveStart
       } else if (
         isHitCircle(canvasContextRef.current.canvas, e, {
           x: x2,
-          y: y2,
+          y: y2
         }, scale)
       ) {
         type = ArrowEditType.MoveEnd
