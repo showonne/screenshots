@@ -8,14 +8,16 @@
 
 ## Install
 
-[![NPM](https://nodei.co/npm/electron-screenshots.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/electron-screenshots/)
+```bash
+yarn add @cc-kit/electron-screenshots
+```
 
 ## Usage
 
 ```ts
 import debug from "electron-debug";
 import { app, globalShortcut } from "electron";
-import Screenshots from "./screenshots";
+import Screenshots from "@cc-kit/electron-screenshots";
 
 app.whenReady().then(() => {
   const screenshots = new Screenshots();
@@ -81,6 +83,13 @@ module.exports = {
     },
   },
 };
+```
+
+- 如果使用 vite 打包，需要配置 `vite.config.js`：
+```js
+optimizeDeps: {
+  exclude: ['node-screenshots']
+},
 ```
 
 - esc 取消截图，可用以下代码实现按 esc 取消截图

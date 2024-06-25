@@ -32,9 +32,9 @@
   "author": "showonne",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nashaofu/screenshots/issues"
+    "url": "https://github.com/showonne/screenshots/issues"
   },
-  "homepage": "https://github.com/nashaofu/screenshots/tree/master/packages/react-screenshots#readme",
+  "homepage": "https://github.com/showonne/screenshots/tree/master/packages/react-screenshots#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
