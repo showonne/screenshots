@@ -169,8 +169,8 @@ export default function Ellipse (): ReactElement {
       }
 
       const { left, top } = canvasContextRef.current.canvas.getBoundingClientRect()
-      const x = e.clientX - left
-      const y = e.clientY - top
+      const x = (e.clientX - left) / scale
+      const y = (e.clientY - top) / scale
       ellipseRef.current = {
         name: 'Ellipse',
         type: HistoryItemType.Source,
@@ -187,7 +187,7 @@ export default function Ellipse (): ReactElement {
         isHit
       }
     },
-    [checked, size, color, canvasContextRef]
+    [checked, size, color, canvasContextRef, scale]
   )
 
   const onMousemove = useCallback(
@@ -207,8 +207,8 @@ export default function Ellipse (): ReactElement {
         }
       } else if (ellipseRef.current) {
         const { left, top } = canvasContextRef.current.canvas.getBoundingClientRect()
-        ellipseRef.current.data.x2 = e.clientX - left
-        ellipseRef.current.data.y2 = e.clientY - top
+        ellipseRef.current.data.x2 = (e.clientX - left) / scale
+        ellipseRef.current.data.y2 = (e.clientY - top) / scale
 
         if (history.top !== ellipseRef.current) {
           historyDispatcher.push(ellipseRef.current)
@@ -217,7 +217,7 @@ export default function Ellipse (): ReactElement {
         }
       }
     },
-    [checked, canvasContextRef, history, historyDispatcher]
+    [checked, canvasContextRef, history, historyDispatcher, scale]
   )
 
   const onMouseup = useCallback(() => {

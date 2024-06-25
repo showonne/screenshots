@@ -3,7 +3,7 @@ import useCanvasMousedown from '../../hooks/useCanvasMousedown'
 import useCanvasMousemove from '../../hooks/useCanvasMousemove'
 import useCanvasMouseup from '../../hooks/useCanvasMouseup'
 import ScreenshotsButton from '../../ScreenshotsButton'
-import ScreenshotsSizeColor from '../../ScreenshotsSizeColor'
+// import ScreenshotsSizeColor from '../../ScreenshotsSizeColor'
 import useCursor from '../../hooks/useCursor'
 import useOperation from '../../hooks/useOperation'
 import useHistory from '../../hooks/useHistory'
@@ -16,6 +16,7 @@ import useLang from '../../hooks/useLang'
 import { useColor } from '../../hooks/useColor'
 import { CommonPopover } from '../../CommonPopover'
 import ScreenshotsColor from '../../ScreenshotsColor'
+import useStore from '../../hooks/useStore'
 
 export interface BrushData {
   size: number
@@ -40,6 +41,7 @@ export default function Brush (): ReactElement {
   const brushRef = useRef<HistoryItemSource<BrushData, BrushEditData> | null>(null)
   const brushEditRef = useRef<HistoryItemEdit<BrushEditData, BrushData> | null>(null)
   const { color, setColor } = useColor()
+  const { scale } = useStore()
 
   const checked = operation === 'Brush'
 
@@ -96,8 +98,8 @@ export default function Brush (): ReactElement {
           color,
           points: [
             {
-              x: e.clientX - left,
-              y: e.clientY - top
+              x: (e.clientX - left) / scale,
+              y: (e.clientY - top) / scale
             }
           ]
         },
@@ -106,7 +108,7 @@ export default function Brush (): ReactElement {
         isHit
       }
     },
-    [checked, canvasContextRef, size, color]
+    [checked, canvasContextRef, size, color, scale]
   )
 
   const onMousemove = useCallback(
@@ -128,8 +130,8 @@ export default function Brush (): ReactElement {
         const { left, top } = canvasContextRef.current.canvas.getBoundingClientRect()
 
         brushRef.current.data.points.push({
-          x: e.clientX - left,
-          y: e.clientY - top
+          x: (e.clientX - left) / scale,
+          y: (e.clientY - top) / scale
         })
 
         if (history.top !== brushRef.current) {
@@ -139,7 +141,7 @@ export default function Brush (): ReactElement {
         }
       }
     },
-    [checked, history, canvasContextRef, historyDispatcher]
+    [checked, history, canvasContextRef, historyDispatcher, scale]
   )
 
   const onMouseup = useCallback((): void => {

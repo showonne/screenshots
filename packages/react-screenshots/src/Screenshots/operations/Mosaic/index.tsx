@@ -102,7 +102,7 @@ export default function Mosaic (): ReactElement {
         draw
       }
     },
-    [checked, size, canvasContextRef]
+    [checked, size, canvasContextRef, scale]
   )
 
   const onMousemove = useCallback(
@@ -162,7 +162,7 @@ export default function Mosaic (): ReactElement {
         historyDispatcher.set(history)
       }
     },
-    [checked, canvasContextRef, history, historyDispatcher]
+    [checked, canvasContextRef, history, historyDispatcher, scale]
   )
 
   const onMouseup = useCallback(() => {

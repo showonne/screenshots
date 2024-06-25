@@ -125,17 +125,17 @@ export default function Arrow (): ReactElement {
         data: {
           size,
           color,
-          x1: e.clientX - left,
-          y1: e.clientY - top,
-          x2: e.clientX - left,
-          y2: e.clientY - top
+          x1: (e.clientX - left) / scale,
+          y1: (e.clientY - top) / scale,
+          x2: (e.clientX - left) / scale,
+          y2: (e.clientY - top) / scale
         },
         editHistory: [],
         draw,
         isHit
       }
     },
-    [checked, color, size, canvasContextRef]
+    [checked, color, size, canvasContextRef, scale]
   )
 
   const onMousemove = useCallback(
@@ -155,8 +155,8 @@ export default function Arrow (): ReactElement {
       } else if (arrowRef.current) {
         const { left, top } = canvasContextRef.current.canvas.getBoundingClientRect()
 
-        arrowRef.current.data.x2 = e.clientX - left
-        arrowRef.current.data.y2 = e.clientY - top
+        arrowRef.current.data.x2 = (e.clientX - left) / scale
+        arrowRef.current.data.y2 = (e.clientY - top) / scale
 
         if (history.top !== arrowRef.current) {
           historyDispatcher.push(arrowRef.current)
@@ -165,7 +165,7 @@ export default function Arrow (): ReactElement {
         }
       }
     },
-    [checked, history, canvasContextRef, historyDispatcher]
+    [checked, history, canvasContextRef, historyDispatcher, scale]
   )
 
   const onMouseup = useCallback(() => {

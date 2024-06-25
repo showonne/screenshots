@@ -21,6 +21,7 @@ import useLang from '../../hooks/useLang'
 import { useColor } from '../../hooks/useColor'
 import { CommonPopover } from '../../CommonPopover'
 import ScreenshotsColor from '../../ScreenshotsColor'
+import useStore from '../../hooks/useStore'
 
 export interface TextData {
   size: number;
@@ -121,6 +122,8 @@ export default function Text (): ReactElement {
   const canvasContextRef = useCanvasContextRef()
   const [size, setSize] = useState(3)
   const { color, setColor } = useColor()
+  const { scale } = useStore()
+
   const textRef = useRef<HistoryItemSource<TextData, TextEditData> | null>(
     null
   )
@@ -214,8 +217,8 @@ export default function Text (): ReactElement {
       const fontFamily = window.getComputedStyle(
         canvasContextRef.current.canvas
       ).fontFamily
-      const x = e.clientX - left
-      const y = e.clientY - top
+      const x = (e.clientX - left) / scale
+      const y = (e.clientY - top) / scale
 
       textRef.current = {
         name: 'Text',
@@ -240,7 +243,7 @@ export default function Text (): ReactElement {
         maxHeight: bounds.height - y
       })
     },
-    [checked, size, color, bounds, canvasContextRef]
+    [checked, size, color, bounds, canvasContextRef, scale]
   )
 
   const onMousemove = useCallback(
