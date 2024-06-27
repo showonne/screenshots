@@ -32,7 +32,7 @@ type IEventType = 'onOk' | 'onCancel' | 'onSave'
 
 export interface ScreenshotsRef {
   manualSelect: (p1: Point, p2: Point) => void
-  updateScale: (delta: number) => void
+  updateScale: (scale: number) => void
   // updateSize: (size: number) => void
   updateColor: (color: string) => void
   redo: () => void
@@ -198,8 +198,7 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
     backgroundRef.current?.manualSelect(p1, p2)
   }
 
-  const updateScale = (delta: number) => {
-    const _scale = parseFloat((scale + delta).toFixed(2))
+  const updateScale = (_scale: number) => {
     setScale(_scale)
     props.onScaleChange?.(_scale)
   }
