@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Screenshots from '../Screenshots'
-import { Bounds } from '../Screenshots/types'
+import { Mode, Bounds } from '../Screenshots/types'
 import { Lang } from '../Screenshots/zh_CN'
 import './app.less'
 
@@ -18,13 +18,14 @@ export default function App (): JSX.Element {
   const [height, setHeight] = useState(window.innerHeight)
   const [display, setDisplay] = useState<Display | undefined>(undefined)
   const [lang, setLang] = useState<Lang | undefined>(undefined)
+  const [mode] = useState<Mode>(() => (new URL(location.href).searchParams.get('mode') as Mode) ?? Mode.Screenshot)
 
   const onSave = useCallback(
     async (blob: Blob | null, bounds: Bounds) => {
       if (!display || !blob) {
         return
       }
-      window.screenshots.save(await blob.arrayBuffer(), { bounds, display })
+      window.screenshots.save(await blob.arrayBuffer(), { bounds, display, mode })
     },
     [display]
   )
@@ -38,7 +39,7 @@ export default function App (): JSX.Element {
       if (!display || !blob) {
         return
       }
-      window.screenshots.ok(await blob.arrayBuffer(), { bounds, display })
+      window.screenshots.ok(await blob.arrayBuffer(), { bounds, display, mode })
     },
     [display]
   )
@@ -94,6 +95,7 @@ export default function App (): JSX.Element {
         onSave={onSave}
         onCancel={onCancel}
         onOk={onOk}
+        mode={mode}
       />
     </div>
   )

@@ -51,4 +51,10 @@ export interface Bounds {
   height: number
 }
 
+export enum Mode {
+  Screenshot = 'screenshots',
+  ShareScreen = 'sharescreen',
+  Editor = 'editor'
+}
+
 export type Position = Point

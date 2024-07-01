@@ -10,6 +10,10 @@ import Arrow from './Arrow'
 import Ellipse from './Ellipse'
 import Rectangle from './Rectangle'
 
+// share screen button
+import ShareOk from './ShareScreen/OK'
+import ShareCancel from './ShareScreen/Cancel'
+
 export {
   Ok,
   Cancel,
@@ -25,3 +29,5 @@ export {
 }
 
 export default [Rectangle, Ellipse, Arrow, '|', Text, Brush, Mosaic, '|', Undo, Redo, '|', Save, Cancel, Ok]
+
+export const ShareScreenButtons = [ShareCancel, ShareOk]

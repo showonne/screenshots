@@ -13,7 +13,7 @@ import fs from 'fs-extra';
 import Event from './event';
 import getDisplay, { Display } from './getDisplay';
 import padStart from './padStart';
-import { Bounds, ScreenshotsData } from './preload';
+import { Bounds, ScreenshotsData, Mode } from './preload';
 
 export type LoggerFn = (...args: unknown[]) => void;
 export type Logger = Debugger | LoggerFn;
@@ -37,6 +37,7 @@ export interface ScreenshotsOpts {
   lang?: Lang;
   logger?: Logger;
   singleWindow?: boolean;
+  mode?: Mode
 }
 
 export { Bounds };
@@ -57,6 +58,8 @@ export default class Screenshots extends Events {
 
   private singleWindow: boolean;
 
+  private mode: Mode
+
   private isReady = new Promise<void>((resolve) => {
     ipcMain.once('SCREENSHOTS:ready', () => {
       this.logger('SCREENSHOTS:ready');
@@ -69,9 +72,10 @@ export default class Screenshots extends Events {
     super();
     this.logger = opts?.logger || debug('electron-screenshots');
     this.singleWindow = opts?.singleWindow || false;
+    this.mode = opts?.mode || Mode.Screenshot
     this.listenIpc();
     this.$view.webContents.loadURL(
-      `file://${require.resolve('@cc-kit/react-screenshots/electron/electron.html')}`,
+      `file://${require.resolve('@cc-kit/react-screenshots/electron/electron.html')}?mode=${this.mode}`,
     );
     if (opts?.lang) {
       this.setLang(opts.lang);
@@ -331,7 +335,9 @@ export default class Screenshots extends Events {
       if (event.defaultPrevented) {
         return;
       }
-      clipboard.writeImage(nativeImage.createFromBuffer(buffer));
+      if(data.mode !== Mode.ShareScreen) {
+        clipboard.writeImage(nativeImage.createFromBuffer(buffer));
+      }
       this.endCapture();
     });
     /**
