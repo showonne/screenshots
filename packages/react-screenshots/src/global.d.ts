@@ -3,8 +3,6 @@ import { Bounds, Mode } from './Screenshots/types'
 
 type ScreenshotsListener = (...args: never[]) => void
 
-
-
 interface ScreenshotsData {
   bounds: Bounds
   display: Display

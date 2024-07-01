@@ -58,7 +58,7 @@ export default class Screenshots extends Events {
 
   private singleWindow: boolean;
 
-  private mode: Mode
+  private mode: Mode;
 
   private isReady = new Promise<void>((resolve) => {
     ipcMain.once('SCREENSHOTS:ready', () => {
@@ -72,7 +72,7 @@ export default class Screenshots extends Events {
     super();
     this.logger = opts?.logger || debug('electron-screenshots');
     this.singleWindow = opts?.singleWindow || false;
-    this.mode = opts?.mode || Mode.Screenshot
+    this.mode = opts?.mode || Mode.Screenshot;
     this.listenIpc();
     this.$view.webContents.loadURL(
       `file://${require.resolve('@cc-kit/react-screenshots/electron/electron.html')}?mode=${this.mode}`,
@@ -335,7 +335,7 @@ export default class Screenshots extends Events {
       if (event.defaultPrevented) {
         return;
       }
-      if(data.mode !== Mode.ShareScreen) {
+      if (data.mode !== Mode.ShareScreen) {
         clipboard.writeImage(nativeImage.createFromBuffer(buffer));
       }
       this.endCapture();

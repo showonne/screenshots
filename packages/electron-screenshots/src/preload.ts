@@ -24,7 +24,7 @@ export interface ScreenshotsData {
 export enum Mode {
   Screenshot = 'screenshots',
   ShareScreen = 'sharescreen',
-  Editor = 'editor'
+  Editor = 'editor',
 }
 
 const map = new Map<ScreenshotsListener, Record<string, IpcRendererListener>>();

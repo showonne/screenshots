@@ -11,7 +11,7 @@ import Ellipse from './Ellipse'
 import Rectangle from './Rectangle'
 
 // share screen button
-import ShareOk from './ShareScreen/OK'
+import ShareOk from './ShareScreen/Ok'
 import ShareCancel from './ShareScreen/Cancel'
 
 export {

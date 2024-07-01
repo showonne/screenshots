@@ -79,7 +79,7 @@ export default memo(function ScreenshotsOperations (): ReactElement | null {
     <ScreenshotsOperationsCtx.Provider value={operationsRect}>
       <div
         ref={elRef}
-        className={`screenshots-operations`}
+        className='screenshots-operations'
         style={{
           visibility: mode === 'editor' ? 'hidden' : position ? 'visible' : 'hidden',
           transform: `translate(${position?.x ?? 0}px, ${position?.y ?? 0}px)`
@@ -88,7 +88,7 @@ export default memo(function ScreenshotsOperations (): ReactElement | null {
         onContextMenu={onContextMenu}
       >
         <div className={`screenshots-operations-buttons ${mode}`}>
-          {(mode === Mode.Screenshot? ShareScreenButtons: OperationButtons).map((OperationButton, index) => {
+          {(mode === Mode.ShareScreen ? ShareScreenButtons : OperationButtons).map((OperationButton, index) => {
             if (OperationButton === '|') {
               return <div key={index} className='screenshots-operations-divider' />
             } else {
