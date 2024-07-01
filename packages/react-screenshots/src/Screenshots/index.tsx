@@ -110,6 +110,10 @@ export default forwardRef(function Screenshots ({ url, container, lang, classNam
     classNames.push(className)
   }
 
+  if (mode === 'editor') {
+    classNames.push('editor-mode')
+  }
+
   const reset = () => {
     emiterRef.current = {}
     setHistory({

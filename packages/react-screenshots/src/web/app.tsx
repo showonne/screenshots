@@ -2,7 +2,7 @@ import React, { ReactElement, useCallback, useEffect, useReducer, useRef, useSta
 import Screenshots, { ScreenshotsRef } from '../Screenshots'
 import { Bounds } from '../Screenshots/types'
 import './app.less'
-import imageUrl from './basic.jpg'
+import imageUrl from './Twitter.png'
 import { Button, Divider, Popover } from 'antd'
 import ScreenshotsSizeColor from '../Screenshots/ScreenshotsSizeColor'
 
