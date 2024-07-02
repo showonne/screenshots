@@ -1,11 +1,12 @@
 import { Display } from './electron/app'
-import { Bounds } from './Screenshots/types'
+import { Bounds, Mode } from './Screenshots/types'
 
 type ScreenshotsListener = (...args: never[]) => void
 
 interface ScreenshotsData {
   bounds: Bounds
   display: Display
+  mode?: Mode
 }
 
 interface GlobalScreenshots {

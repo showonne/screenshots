@@ -6,7 +6,7 @@ import ScreenshotsBackground, { ScreenshotsBackgroundRef } from './ScreenshotsBa
 import ScreenshotsCanvas from './ScreenshotsCanvas'
 import ScreenshotsContext from './ScreenshotsContext'
 import ScreenshotsOperations from './ScreenshotsOperations'
-import { Bounds, Emiter, History, HistoryItemType, Point } from './types'
+import { Mode, Bounds, Emiter, History, HistoryItemType, Point } from './types'
 import useGetLoadedImage from './useGetLoadedImage'
 import zhCN, { Lang } from './zh_CN'
 import { useMemoizedFn, useThrottleFn } from 'ahooks'
@@ -20,7 +20,7 @@ export interface ScreenshotsProps {
   height: number
   lang?: Partial<Lang>
   className?: string
-  mode: 'screenshots' | 'editor'
+  mode?: Mode,
   onScaleChange?: (scale: number) => void
   onHistoryChange?: (status: { redoDisabled: boolean, undoDisabled: boolean }) => void
   onOperationChange?: (operation: string) => void
@@ -44,7 +44,7 @@ export interface ScreenshotsRef {
 
 const globalEvents: Emitter<Record<EventType, unknown>> = mitt()
 
-export default forwardRef(function Screenshots ({ url, container, lang, className, height: initHeight, width: initWidth, mode = 'screenshots', onHistoryChange, onOperationChange, scaleable = false, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
+export default forwardRef(function Screenshots ({ url, container, lang, className, height: initHeight, width: initWidth, mode = Mode.Screenshot, onHistoryChange, onOperationChange, scaleable = false, ...props }: ScreenshotsProps, ref: React.ForwardedRef<ScreenshotsRef>): ReactElement {
   const image = useGetLoadedImage(url)
   const canvasContextRef = useRef<CanvasRenderingContext2D>(null)
   const emiterRef = useRef<Emiter>({})

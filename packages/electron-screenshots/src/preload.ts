@@ -18,6 +18,13 @@ export interface Bounds {
 export interface ScreenshotsData {
   bounds: Bounds;
   display: Display;
+  mode?: Mode
+}
+
+export enum Mode {
+  Screenshot = 'screenshots',
+  ShareScreen = 'sharescreen',
+  Editor = 'editor',
 }
 
 const map = new Map<ScreenshotsListener, Record<string, IpcRendererListener>>();

@@ -1,6 +1,6 @@
 import React, { ReactElement, useCallback, useEffect, useReducer, useRef, useState } from 'react'
 import Screenshots, { ScreenshotsRef } from '../Screenshots'
-import { Bounds } from '../Screenshots/types'
+import { Bounds, Mode } from '../Screenshots/types'
 import './app.less'
 import imageUrl from './Twitter.png'
 import { Button, Divider, Popover } from 'antd'
@@ -30,7 +30,7 @@ export default function App (): ReactElement {
   const rootRef = useRef<HTMLDivElement>(null)
   const screenshotsRef = useRef<ScreenshotsRef>(null)
   const containRef = useRef<HTMLDivElement>()
-  const [mode] = useState('editor')
+  const [mode] = useState<Mode>(Mode.ShareScreen)
 
   const [scale, setScale] = useState(1)
 
